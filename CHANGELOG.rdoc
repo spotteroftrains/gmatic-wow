@@ -1,0 +1,161 @@
+= GUI_3_0_1_20090903
+
+* [shaper] fix auction bugs where if we only had one bidder in final
+  round, we would always use the winner of the previous round, which
+  could cause a few issues: (1) one bidder trying to beat out the
+  previous guys could never win if previous round was a tie, and in
+  fact it would also arbitrarily choose one of the two previous tied
+  folk and announce them as the winner; (2) one bidder trying to win
+  an item with no competition at all in first round couldn't win.
+
+* [shaper] fix queue add/join to allow specifying "Death Knight" as
+  class.
+
+= GUI_3_0_0_RC6_20090816
+
+* [mouthbreather] updated for WoW 3.2 patch compatibility.
+
+= GUI_3_0_0_RC5_20090531
+
+* [shaper] added "delete snapshot" button in snapshot detail view to
+  allow deleting a single snapshot.
+
+* [shaper] added initial snapshot detail view sub-frame.
+
+* [shaper] restored auto-convert-to-raid functionality when using
+  calendar invite tool.
+
+* [shaper] restored queue functionality.
+
+* [shaper] fixed bug where auction timer didn't fire if the
+  Guildomatic window wasn't visible.
+
+* [shaper] added config checkbox to set whether to show minimap icon.
+
+* [shaper] added snapshot detail view when snapshot selected in Raids tab.
+
+* [shaper] increase width of roster last-snap/guild name text display
+  to avoid wrapping.
+
+= GUI_3_0_0_RC4_20090505
+
+* [shaper] increase width of gmatic window by 100 pixels and resize
+  displays to allow viewing times and zones more easily.  tweak layout
+  of various column and button dimensions and placements.
+
+* [shaper] persist selected tab in gmatic window across game sessions.
+
+* [shaper] update raids view when new item loot recorded.
+
+* [shaper] allow "/gt" in addition to "/gmatic" for command line
+  commands.
+
+* [shaper] added config panel option to enable/disable showing players
+  with zero dkp in the dkp tab list.
+
+* [shaper] added config panel option to enable/disable dkp lookups.
+
+* [shaper] added config panel option menu for "minimum loot color".
+
+* [shaper] change references to "minimum loot color" for capture to
+  "minimum loot quality".
+
+= GUI_3_0_0_RC3_20090430
+
+* [shaper] gui display for roster, raids, auctions, dkp, with sortable
+  columns
+
+* [shaper] gui to take a snapshot
+
+* [shaper] gui to record roster
+
+* [shaper] gui config window showing version and to clear auctions,
+  snapshots
+
+* [shaper] minimap icon (click to toggle window, right-click to show
+  config panel)
+
+* [shaper] cleaned up display of command-line help menus, formatting,
+  updated to add some that were missing
+
+* [shaper] moved all command-line commands to be under "/gmatic"
+  prefix, so for instance "/gmatic snapshot (bossname) (dkp)" and
+  "/gmatic snapshot loot grey" etc.
+
+* [shaper] fixed a bunch of small bugs (trim whitespace on
+  item/snapshot names, require bids > 0, added missing help menu
+  items, etc.)
+
+= GMATIC_WOW_2_0_22_20090816
+
+- updated for WoW 3.2 patch compatibility.
+
+= GMATIC_WOW_2_0_21_20090425
+
+- use CalendarNewGuildEvent() instead of the now-removed
+  CalendarNewGuildWideEvent.
+
+= GMATIC_WOW_2_0_20_20090415
+
+* [shaper] upped wow version to 3.1.0 and mod version to 2.0.20.
+
+* [vealchop] fixed chat filter changes for 3.1 which now pass in
+
+    local function chatFilterFunction (self, event, arg1, ...., arg11)
+
+  and now explicitly requires the second parameter returned from filters
+  to be arg1, ...., arg11. In our practice, our returns from chat filters
+  will look like
+
+    return [true|false], ...
+
+= GMATIC_WOW_2_0_19_20090316
+
+= GUILDOMATIC_DKP_2_0_13_20080409
+
+* [vealchop] fixed auto-snapshot to use COMBAT_LOG_EVENT_UNFILTERED
+
+* [shaper] added documentation on the "/queue status" command to the
+  "/queue" command help output.
+
+= GUILDOMATIC_DKP_2_0_12_20080402
+
+* [vealchop] snapshots, loot and auctions are now recorded with a new field
+  "utc_time" which is the local computer's report of UTC time
+
+* [vealchop] fixed auto-snapshot to use COMBAT_LOG_EVENT per 2.4 patch
+
+= GUILDOMATIC_DKP_2_0_11_20080326
+
+* [shaper] updated for patch 2.4 compatibility.
+
+= GUILDOMATIC_DKP_2_0_10_20080204
+
+* [vealchop] added ability to prevent dkp whisper flooding
+
+* [vealchop] added /snapshot ignore facilities to ignore loot items by name
+
+* [vealchop] print a reminder message if they're going into an
+  instance with snapshots
+
+= GUILDOMATIC_DKP_2_0_9_20071113
+
+* [vealchop] fixed snapshot check condition during looting to make
+  sure we print a message to the user if there are no snapshots
+
+* [vealchop] removed references to UnionDKP
+
+* [vealchop] config SavedVariable is now only accessed after we
+  receive the APP_LOADED event which means it's safe to do so
+
+* [vealchop] ties at auction end are now announced with the tied bidders
+
+* [vealchop] cleaned up queue status code and allowed configuration
+  for setting the channel to output status and how often to output
+  status
+
+* [vealchop] auction rounds are now configurable wrt number of rounds
+  and time
+
+* [vealchop] set to auto-enable showing offline members when grabbing
+  the roster

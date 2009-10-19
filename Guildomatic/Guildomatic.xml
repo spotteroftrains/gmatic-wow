@@ -1,0 +1,190 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+    <Frame name="GuildomaticDummyFrame" frameStrata="LOW" enableMouse="false" movable="false" parent="UIParent" hidden="false">
+      <Scripts>
+        <OnUpdate>
+          Guildomatic_OnUpdate(arg1);
+        </OnUpdate>
+      </Scripts>
+    </Frame>
+
+  <Frame name="GuildomaticFrame" toplevel="true" movable="true" 
+         enableMouse="true" hidden="true" parent="UIParent">
+    <Size>
+      <AbsDimension x="450" y="467"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+
+      <Layer level="ARTWORK">
+        <Texture name="$parentBackground" file="Interface\Addons\Guildomatic\Textures\LogoBackgroundGloss">
+          <Size>
+            <AbsDimension x="54" y="54"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"><Offset x="10" y="-9"/></Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+
+      <Layer level="BACKGROUND">
+        <Texture name="$parentBackground" file="Interface\Addons\Guildomatic\Textures\LogoBackground">
+          <Size>
+            <AbsDimension x="54" y="54"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"><Offset x="10" y="-9"/></Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+
+      <Layer level="OVERLAY">
+        <FontString name="GuildomaticTitleText" text="Guildomatic" inherits="GameFontHighlight">
+          <Anchors>
+            <Anchor point="TOP"><Offset x="8" y="-18"/></Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+
+      <Layer level="BORDER">
+        <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-TopLeft">
+          <Size>
+            <AbsDimension x="256" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Addons\Guildomatic\Textures\top">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset x="256" y="0"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-TopRight">
+          <Size x="128" y="256"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"><Offset x="356" y="0"/></Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-BottomLeft">
+          <Size x="256" y="256"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"><Offset x="0" y="-256"/></Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\Addons\Guildomatic\Textures\bot">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset x="256" y="-256"/>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\PaperDollInfoFrame\UI-Character-General-BottomRight">
+          <Size x="128" y="256"/>
+          <Anchors>
+            <Anchor point="TOPLEFT"><Offset x="356" y="-256"/></Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+
+    <Frames>
+      <Button name="$parentTab1" inherits="GuildomaticFrameTabTemplate" id="1" text="Roster">
+        <Anchors>
+          <Anchor point="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="15" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parentTab2" inherits="GuildomaticFrameTabTemplate" id="2" text="Raids">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parentTab3" inherits="GuildomaticFrameTabTemplate" id="3" text="Auctions">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parentTab4" inherits="GuildomaticFrameTabTemplate" id="4" text="DKP">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab3" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="GuildomaticCloseButton" inherits="UIPanelCloseButton">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="GuildomaticFrame" relativePoint="TOPRIGHT">
+            <Offset x="5" y="-8"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="GuildomaticConfigButton" hidden="false">
+        <Size>
+          <AbsDimension x="32" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset x="-4" y="-38"/>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            GConfig:Show()
+          </OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Addons\Guildomatic\Textures\Config-Up"/>
+        <PushedTexture file="Interface\Addons\Guildomatic\Textures\Config-Down"/>
+        <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        Guildomatic:OnLoad();
+      </OnLoad>
+      <OnEvent>
+        Guildomatic:OnEvent(event);
+      </OnEvent>
+      <OnShow>
+        PlaySound("UChatScrollButton");
+        Guildomatic:OnShow();
+      </OnShow>
+      <OnHide>
+        PlaySound("UChatScrollButton");
+        Guildomatic:OnHide()
+      </OnHide>
+      <OnDragStart>
+        self:StartMoving()
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+  </Frame>
+</Ui>

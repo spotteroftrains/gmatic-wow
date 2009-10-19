@@ -1,0 +1,379 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+  <Script file="Auctions.lua"/>
+
+  <Button name="AuctionsEntryTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="398" y="16" />
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentDate" inherits="GameFontNormalSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="100" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentItem" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="135" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentDate" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentWinner" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="73" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentItem" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentDKP" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="40" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentWinner" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        Auctions:OnAuctionsEntryClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="398" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+  <Button name="AuctionsHeaderTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="24"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+	<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="5" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="TOPLEFT"/>
+	  </Anchors>
+	  <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="53" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="4" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+	</Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnClick>
+	if ( self.sortType ) then
+	  Auctions:OnSortColumnClicked(self.sortType);
+	end
+	PlaySound("igMainMenuOptionCheckBoxOn");
+      </OnClick>
+    </Scripts>
+    <ButtonText>
+      <Anchors>
+	<Anchor point="LEFT">
+	  <Offset>
+	    <AbsDimension x="8" y="0"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontHighlightSmall"/>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+      <Anchors>
+	<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+	  <Offset>
+	    <AbsDimension x="-2" y="5"/>
+	  </Offset>
+	</Anchor>
+	<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+	  <Offset>
+	    <AbsDimension x="2" y="-7"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+  <Frame name="GuildomaticAuctionsTabFrame"
+         parent="GuildomaticFrame" enableMouse="true" movable="true" 
+         hidden="true">
+    <Size>
+      <AbsDimension x="430" y="365"/>
+    </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT">
+        <Offset>
+          <AbsDimension x="15" y="-70"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString inherits="GameFontNormal" text="Auctions">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentHeader1" inherits="AuctionsHeaderTemplate" text="When">
+	<Anchors>
+	  <Anchor point="TOPLEFT">
+	    <Offset>
+	      <AbsDimension x="10" y="-10"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Auctions:SetHeaderWidth(self, 115);
+	    self.sortType = "end";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader2" inherits="AuctionsHeaderTemplate" text="Item">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader1" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Auctions:SetHeaderWidth(self, 145);
+	    self.sortType = "item";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader3" inherits="AuctionsHeaderTemplate" text="Who">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader2" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Auctions:SetHeaderWidth(self, 98);
+	    self.sortType = "winner";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader4" inherits="AuctionsHeaderTemplate" text="DKP">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader3" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Auctions:SetHeaderWidth(self, 40);
+	    self.sortType = "highbid";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <ScrollFrame name="$parentScrollBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="390" y="284"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentHeader1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-30" y="11"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
+              function () Auctions:UpdateScrollBar() end);
+          </OnVerticalScroll>
+          <OnShow>
+            Auctions:UpdateScrollBar()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+      <Button name="AuctionsEntry1" inherits="AuctionsEntryTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentScrollBar" relativePoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2"/>
+            </Offset>
+           </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry2" inherits="AuctionsEntryTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry1" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry3" inherits="AuctionsEntryTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry2" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry4" inherits="AuctionsEntryTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry3" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry5" inherits="AuctionsEntryTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry4" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry6" inherits="AuctionsEntryTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry5" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry7" inherits="AuctionsEntryTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry6" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry8" inherits="AuctionsEntryTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry7" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry9" inherits="AuctionsEntryTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry8" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry10" inherits="AuctionsEntryTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry9" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry11" inherits="AuctionsEntryTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry10" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry12" inherits="AuctionsEntryTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry11" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry13" inherits="AuctionsEntryTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry12" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry14" inherits="AuctionsEntryTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry13" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry15" inherits="AuctionsEntryTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry14" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry16" inherits="AuctionsEntryTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry15" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry17" inherits="AuctionsEntryTemplate" id="17">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry16" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry18" inherits="AuctionsEntryTemplate" id="18">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry17" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry19" inherits="AuctionsEntryTemplate" id="19">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry18" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="AuctionsEntry20" inherits="AuctionsEntryTemplate" id="20">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="AuctionsEntry19" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        Auctions:OnLoad()
+      </OnLoad>
+      <OnShow>
+        Auctions:OnShow()
+      </OnShow>
+    </Scripts>
+  </Frame>
+</Ui>

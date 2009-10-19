@@ -1,0 +1,417 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+  <Script file="Roster.lua"/>
+  
+  <Button name="RosterEntryTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="398" y="16" />
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentName" inherits="GameFontNormalSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="135" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentRank" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="110" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentLvl" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="20" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentRank" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentClass" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="70" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentLvl" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        Roster:OnRosterEntryClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="398" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+  <Button name="RosterHeaderTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="24"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+	<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="5" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="TOPLEFT"/>
+	  </Anchors>
+	  <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="53" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="4" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+	</Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnClick>
+	if ( self.sortType ) then
+	  Roster:OnSortColumnClicked(self.sortType);
+	end
+	PlaySound("igMainMenuOptionCheckBoxOn");
+      </OnClick>
+    </Scripts>
+    <ButtonText>
+      <Anchors>
+	<Anchor point="LEFT">
+	  <Offset>
+	    <AbsDimension x="8" y="0"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontHighlightSmall"/>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+      <Anchors>
+	<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+	  <Offset>
+	    <AbsDimension x="-2" y="5"/>
+	  </Offset>
+	</Anchor>
+	<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+	  <Offset>
+	    <AbsDimension x="2" y="-7"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+  <Frame name="GuildomaticRosterTabFrame" 
+         parent="GuildomaticFrame" enableMouse="true" movable="true" hidden="true">
+    <Size>
+      <AbsDimension x="430" y="365"/>
+    </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT">
+        <Offset>
+          <AbsDimension x="15" y="-70"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Layers>
+      <Layer level="ARTWORK">
+
+        <FontString inherits="GameFontNormal" text="Roster">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+
+        <FontString name="$parentSnappedAt" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="BOTTOM">
+          <Size>
+            <AbsDimension x="400" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="10" y="11"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+
+        <FontString name="$parentMemberCount" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="BOTTOM">
+          <Size>
+            <AbsDimension x="400" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT" relativeTo="$parentSnappedAt">
+              <Offset>
+                <AbsDimension x="0" y="15"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentHeader1" inherits="RosterHeaderTemplate" text="NAME">
+	<Anchors>
+	  <Anchor point="TOPLEFT">
+	    <Offset>
+	      <AbsDimension x="10" y="-10"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Roster:SetHeaderWidth(self, 150);
+	    self.sortType = "name";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader2" inherits="RosterHeaderTemplate" text="RANK">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader1" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Roster:SetHeaderWidth(self, 125);
+	    self.sortType = "rank";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader3" inherits="RosterHeaderTemplate" text="LEVEL_ABBR">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader2" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Roster:SetHeaderWidth(self, 30);
+	    self.sortType = "level";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader4" inherits="RosterHeaderTemplate" text="CLASS">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader3" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Roster:SetHeaderWidth(self, 90);
+	    self.sortType = "class";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentRecordButton" inherits="UIPanelButtonTemplate" text="Record Roster">
+        <Size>
+          <AbsDimension x="132" y="22"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset>
+              <AbsDimension x="-5" y="29"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            Roster:Record();
+          </OnClick>
+        </Scripts>
+      </Button>
+
+      <!-- scrolling region with buttons and ten rows for displaying members -->
+      <ScrollFrame name="$parentScrollBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="390" y="284"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentHeader1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-30" y="42"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
+              function () Roster:UpdateScrollBar() end);
+          </OnVerticalScroll>
+          <OnShow>
+            Roster:UpdateScrollBar()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+
+      <Button name="RosterEntry1" inherits="RosterEntryTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentScrollBar" relativePoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2"/>
+            </Offset>
+           </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry2" inherits="RosterEntryTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry1" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry3" inherits="RosterEntryTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry2" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry4" inherits="RosterEntryTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry3" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry5" inherits="RosterEntryTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry4" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry6" inherits="RosterEntryTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry5" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry7" inherits="RosterEntryTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry6" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry8" inherits="RosterEntryTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry7" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry9" inherits="RosterEntryTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry8" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry10" inherits="RosterEntryTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry9" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry11" inherits="RosterEntryTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry10" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry12" inherits="RosterEntryTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry11" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry13" inherits="RosterEntryTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry12" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry14" inherits="RosterEntryTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry13" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry15" inherits="RosterEntryTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry14" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry16" inherits="RosterEntryTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry15" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry17" inherits="RosterEntryTemplate" id="17">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry16" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RosterEntry18" inherits="RosterEntryTemplate" id="18">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RosterEntry17" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        Roster:OnLoad()
+      </OnLoad>
+      <OnShow>
+        Roster:OnShow()
+      </OnShow>
+    </Scripts>
+  </Frame>
+</Ui>

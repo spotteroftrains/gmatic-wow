@@ -1,0 +1,235 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+  <Script file="GConfig.lua"/> 
+
+  <Frame name="GConfigPanel">
+    <Frames>
+      <Button name="$parentClearSnapsButton" inherits="UIPanelButtonTemplate" text="Clear Snapshots">
+        <Size>
+          <AbsDimension x="132" y="22"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" relativeTo="$parent">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            Raids:OnClearAllClicked();
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentClearAuctionsButton" inherits="UIPanelButtonTemplate" text="Clear Auctions">
+        <Size>
+          <AbsDimension x="132" y="22"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClearSnapsButton">
+            <Offset>
+              <AbsDimension x="0" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            Auctions:OnClearAllClicked();
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Frame name="$parentMinLootQualityFrame">
+	<Size x="106" y="20"/>
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativeTo="$parentClearAuctionsButton" relativePoint="BOTTOMLEFT">
+	    <Offset x="0" y="-10"/>
+	  </Anchor>
+	</Anchors>
+	<Layers>
+          <Layer level="BACKGROUND">
+	    <FontString name="$parentText" inherits="GameFontNormalSmall" text="Minimum Loot Capture Quality:" justifyH="RIGHT">
+	      <Anchors>
+	        <Anchor point="LEFT">
+		  <Offset x="5" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </FontString>
+	    <FontString name="$parentCurrentQualityText" inherits="GameFontHighlightSmall" text="white" justifyH="LEFT">
+              <Size x="80" y="20"/>
+	      <Anchors>
+	        <Anchor point="LEFT" relativeTo="$parentText" relativePoint="RIGHT">
+		  <Offset x="5" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <Button name="$parentButton">
+	    <Size x="20" y="20"/>
+	    <Anchors>
+	      <Anchor point="LEFT" relativeTo="$parentCurrentQualityText" relativePoint="RIGHT">
+	        <Offset x="0" y="0"/>
+	      </Anchor>
+	    </Anchors>
+	    <Scripts>
+	      <OnClick>
+	        GConfig:LootQualityButton_OnClick(self);
+	      </OnClick>
+	    </Scripts>
+	    <NormalTexture name="$parentNormalTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up">
+	      <Size x="20" y="20"/>
+	      <Anchors>
+	        <Anchor point="RIGHT">
+	          <Offset x="3" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </NormalTexture>
+	    <PushedTexture name="$parentPushedTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down">
+	      <Size x="20" y="20"/>
+	      <Anchors>
+	        <Anchor point="RIGHT">
+	          <Offset x="3" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </PushedTexture>
+	    <DisabledTexture name="$parentDisabledTexture" file="Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled">
+	      <Size x="20" y="20"/>
+	      <Anchors>
+	        <Anchor point="RIGHT">
+	          <Offset x="3" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </DisabledTexture>
+	    <HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD">
+	      <Size x="20" y="20"/>
+	      <Anchors>
+	        <Anchor point="RIGHT">
+	          <Offset x="3" y="0"/>
+	        </Anchor>
+	      </Anchors>
+	    </HighlightTexture>
+          </Button>
+          <Frame name="$parentDropDown" inherits="UIDropDownMenuTemplate" hidden="true">
+	    <Scripts>
+	      <OnLoad>
+	        GConfig:OnLoadLootQualityDropDown(self);
+	      </OnLoad>
+	    </Scripts>
+          </Frame>
+        </Frames>
+      </Frame>
+      <CheckButton name="$parentDKPLookupButton" virtual="true">
+	<Size>
+	  <AbsDimension x="20" y="20"/>
+	</Size>
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentMinLootQualityFrameText">
+	    <Offset>
+	      <AbsDimension x="-5" y="-10"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Layers>
+	  <Layer level="ARTWORK">
+	    <FontString name="$parentText" inherits="GameFontHighlightSmall" text="DKP Lookups Enabled">
+	      <Anchors>
+		<Anchor point="LEFT" relativePoint="RIGHT">
+		  <Offset>
+		    <AbsDimension x="0" y="0"/>
+		  </Offset>
+		</Anchor>
+	      </Anchors>
+	    </FontString>
+	  </Layer>
+	</Layers>
+	<Scripts>
+	  <OnClick>
+            GConfig:DKPLookupButton_OnClick(self)
+	  </OnClick>
+	</Scripts>
+	<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+	<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+	<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+	<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+	<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+      </CheckButton>      
+      <CheckButton name="$parentDKPShowZeroButton" virtual="true">
+	<Size>
+	  <AbsDimension x="20" y="20"/>
+	</Size>
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentDKPLookupButton">
+	    <Offset>
+	      <AbsDimension x="0" y="-5"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Layers>
+	  <Layer level="ARTWORK">
+	    <FontString name="$parentText" inherits="GameFontHighlightSmall" text="Show Zero-DKP Players in DKP View">
+	      <Anchors>
+		<Anchor point="LEFT" relativePoint="RIGHT">
+		  <Offset>
+		    <AbsDimension x="0" y="0"/>
+		  </Offset>
+		</Anchor>
+	      </Anchors>
+	    </FontString>
+	  </Layer>
+	</Layers>
+	<Scripts>
+	  <OnClick>
+            GConfig:DKPShowZeroButton_OnClick(self)
+	  </OnClick>
+	</Scripts>
+	<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+	<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+	<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+	<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+	<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+      </CheckButton>      
+      <CheckButton name="$parentShowMinimapButton" virtual="true">
+	<Size>
+	  <AbsDimension x="20" y="20"/>
+	</Size>
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentDKPShowZeroButton">
+	    <Offset>
+	      <AbsDimension x="0" y="-5"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Layers>
+	  <Layer level="ARTWORK">
+	    <FontString name="$parentText" inherits="GameFontHighlightSmall" text="Show Minimap Icon">
+	      <Anchors>
+		<Anchor point="LEFT" relativePoint="RIGHT">
+		  <Offset>
+		    <AbsDimension x="0" y="0"/>
+		  </Offset>
+		</Anchor>
+	      </Anchors>
+	    </FontString>
+	  </Layer>
+	</Layers>
+	<Scripts>
+	  <OnClick>
+            GConfig:ShowMinimapIcon_OnClick(self)
+	  </OnClick>
+	</Scripts>
+	<NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+	<PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+	<HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+	<CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+	<DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+      </CheckButton>      
+    </Frames>
+    <Scripts>
+      <OnLoad>
+	GConfig:OnLoad(self)
+      </OnLoad>
+    </Scripts>
+  </Frame>
+</Ui>

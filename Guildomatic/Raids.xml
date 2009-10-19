@@ -1,0 +1,1187 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+  
+  <Script file="Raids.lua"/>
+
+  <Button name="RaidEntryTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="398" y="16" />
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentName" inherits="GameFontNormalSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="65" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentZone" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="75" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentWhen" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="115" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentZone" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentDKP" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="20" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentWhen" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentPlayers" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="20" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentDKP" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentLoot" inherits="GameFontHighlightSmall" justifyH="RIGHT">
+          <Size>
+            <AbsDimension x="20" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentPlayers" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        Raids:OnRaidEntryClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="398" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Button name="RaidHeaderTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="24"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+	<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="5" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="TOPLEFT"/>
+	  </Anchors>
+	  <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="53" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="4" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+	</Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnClick>
+	if ( self.sortType ) then
+	  Raids:OnSortColumnClicked(self.sortType);
+	end
+	PlaySound("igMainMenuOptionCheckBoxOn");
+      </OnClick>
+    </Scripts>
+    <ButtonText>
+      <Anchors>
+	<Anchor point="LEFT">
+	  <Offset>
+	    <AbsDimension x="8" y="0"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontHighlightSmall"/>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+      <Anchors>
+	<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+	  <Offset>
+	    <AbsDimension x="-2" y="5"/>
+	  </Offset>
+	</Anchor>
+	<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+	  <Offset>
+	    <AbsDimension x="2" y="-7"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Button name="DetailLootEntryTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="285" y="16" />
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentName" inherits="GameFontNormalSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="65" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentItem" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="110" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentNote" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="105" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentItem" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        Raids:OnDetailLootEntryClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="285" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Button name="DetailLootHeaderTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="24"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+	<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="5" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="TOPLEFT"/>
+	  </Anchors>
+	  <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="53" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="4" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+	</Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnClick>
+	if ( self.sortType ) then
+	  Raids:OnDetailLootSortColumnClicked(self.sortType);
+	end
+	PlaySound("igMainMenuOptionCheckBoxOn");
+      </OnClick>
+    </Scripts>
+    <ButtonText>
+      <Anchors>
+	<Anchor point="LEFT">
+	  <Offset>
+	    <AbsDimension x="8" y="0"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontHighlightSmall"/>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+      <Anchors>
+	<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+	  <Offset>
+	    <AbsDimension x="-2" y="5"/>
+	  </Offset>
+	</Anchor>
+	<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+	  <Offset>
+	    <AbsDimension x="2" y="-7"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Button name="DetailPlayerEntryTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="285" y="16" />
+    </Size>
+    <Layers>
+      <Layer level="BORDER">
+        <FontString name="$parentName" inherits="GameFontNormalSmall" justifyH="LEFT" text="foo">
+          <Size>
+            <AbsDimension x="280" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="10" y="-3"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+      </OnLoad>
+      <OnClick>
+        Raids:OnDetailPlayerEntryClick(arg1);
+      </OnClick>
+    </Scripts>
+    <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+      <Size>
+        <AbsDimension x="285" y="16"/>
+      </Size>
+      <Anchors>
+        <Anchor point="TOP">
+          <Offset>
+            <AbsDimension x="5" y="-2"/>
+          </Offset>
+        </Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Button name="DetailPlayerHeaderTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="24"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+	<Texture name="$parentLeft" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="5" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="TOPLEFT"/>
+	  </Anchors>
+	  <TexCoords left="0" right="0.078125" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentMiddle" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="53" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.078125" right="0.90625" top="0" bottom="0.75"/>
+	</Texture>
+	<Texture name="$parentRight" file="Interface\FriendsFrame\WhoFrame-ColumnTabs">
+	  <Size>
+	    <AbsDimension x="4" y="24"/>
+	  </Size>
+	  <Anchors>
+	    <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+	  </Anchors>
+	  <TexCoords left="0.90625" right="0.96875" top="0" bottom="0.75"/>
+	</Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnClick>
+	if ( self.sortType ) then
+	  Raids:OnDetailPlayerSortColumnClicked(self.sortType);
+	end
+	PlaySound("igMainMenuOptionCheckBoxOn");
+      </OnClick>
+    </Scripts>
+    <ButtonText>
+      <Anchors>
+	<Anchor point="LEFT">
+	  <Offset>
+	    <AbsDimension x="8" y="0"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </ButtonText>
+    <NormalFont style="GameFontHighlightSmall"/>
+    <HighlightTexture name="$parentHighlightTexture" file="Interface\PaperDollInfoFrame\UI-Character-Tab-Highlight" alphaMode="ADD">
+      <Anchors>
+	<Anchor point="TOPLEFT" relativeTo="$parentLeft">
+	  <Offset>
+	    <AbsDimension x="-2" y="5"/>
+	  </Offset>
+	</Anchor>
+	<Anchor point="BOTTOMRIGHT" relativeTo="$parentRight">
+	  <Offset>
+	    <AbsDimension x="2" y="-7"/>
+	  </Offset>
+	</Anchor>
+      </Anchors>
+    </HighlightTexture>
+  </Button>
+
+  <Frame name="GuildomaticRaidsTabFrame" parent="GuildomaticFrame" enableMouse="true" movable="true" hidden="true">
+    <Size>
+      <AbsDimension x="430" y="365"/>
+    </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT">
+        <Offset>
+          <AbsDimension x="15" y="-70"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <FontString name="$parentSnapNameLabel" inherits="GameFontNormalSmall" justifyH="LEFT" text="Name:">
+          <Size>
+            <AbsDimension x="50" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="23" y="-20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapDKPLabel" inherits="GameFontNormalSmall" justifyH="LEFT" text="DKP:">
+          <Size>
+            <AbsDimension x="50" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="23" y="-50"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+      <Layer level="ARTWORK">
+        <FontString inherits="GameFontNormal" text="Raids">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="5" y="20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentHeader1" inherits="RaidHeaderTemplate" text="NAME">
+	<Anchors>
+	  <Anchor point="TOPLEFT">
+	    <Offset>
+	      <AbsDimension x="10" y="-75"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 75);
+	    self.sortType = "event";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader2" inherits="RaidHeaderTemplate" text="ZONE">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader1" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 90);
+	    self.sortType = "zone";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader3" inherits="RaidHeaderTemplate" text="When">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader2" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 115);
+	    self.sortType = "time";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader4" inherits="RaidHeaderTemplate" text="DKP">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader3" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 40);
+	    self.sortType = "dkp";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader5" inherits="RaidHeaderTemplate" text="Chrs">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader4" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 40);
+	    self.sortType = "playerCount";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentHeader6" inherits="RaidHeaderTemplate" text="Loot">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentHeader5" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 40);
+	    self.sortType = "lootCount";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <ScrollFrame name="$parentScrollBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="390" y="284"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentHeader1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-30" y="9"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
+              function () Raids:UpdateScrollBar() end);
+          </OnVerticalScroll>
+          <OnShow>
+            Raids:UpdateScrollBar()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+      <Button name="RaidEntry1" inherits="RaidEntryTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentScrollBar" relativePoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2"/>
+            </Offset>
+           </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry2" inherits="RaidEntryTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry1" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry3" inherits="RaidEntryTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry2" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry4" inherits="RaidEntryTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry3" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry5" inherits="RaidEntryTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry4" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry6" inherits="RaidEntryTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry5" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry7" inherits="RaidEntryTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry6" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry8" inherits="RaidEntryTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry7" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry9" inherits="RaidEntryTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry8" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry10" inherits="RaidEntryTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry9" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry11" inherits="RaidEntryTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry10" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry12" inherits="RaidEntryTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry11" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry13" inherits="RaidEntryTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry12" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry14" inherits="RaidEntryTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry13" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry15" inherits="RaidEntryTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry14" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="RaidEntry16" inherits="RaidEntryTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="RaidEntry15" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <EditBox name="$parentSnapName" autoFocus="false" historyLines="1" letters="100">
+        <Size>
+          <AbsDimension x="200" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentSnapNameLabel" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="-8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="200" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            this:ClearFocus();
+          </OnShow>
+          <OnEscapePressed>
+            this:ClearFocus();
+          </OnEscapePressed>
+          <OnEnterPressed>
+            this:ClearFocus();
+          </OnEnterPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+      <EditBox name="$parentSnapDKP" autoFocus="false" historyLines="1" letters="100" numeric="true">
+        <Size>
+          <AbsDimension x="50" y="32"/>
+        </Size>
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentSnapDKPLabel" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="2" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="TOPLEFT">
+                  <Offset>
+                    <AbsDimension x="-8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="50" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size>
+                <AbsDimension x="8" y="28"/>
+              </Size>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentMiddle" relativePoint="RIGHT"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            this:ClearFocus();
+          </OnShow>
+          <OnEscapePressed>
+            this:ClearFocus();
+          </OnEscapePressed>
+          <OnEnterPressed>
+            this:ClearFocus();
+          </OnEnterPressed>
+        </Scripts>
+        <FontString inherits="ChatFontNormal" />
+      </EditBox>
+      <Button name="$parentSnapshotButton" inherits="UIPanelButtonTemplate" text="Take Snapshot">
+        <Size>
+          <AbsDimension x="132" y="22"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentSnapName">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            Raids:OnTakeSnapshotClicked();
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+    <Scripts>
+      <OnHide>
+        Raids:OnHide()
+      </OnHide>
+      <OnLoad>
+        Raids:OnLoad()
+      </OnLoad>
+      <OnShow>
+        Raids:OnShow()
+      </OnShow>
+    </Scripts>
+  </Frame>
+  <Frame name="GuildomaticSnapDetailFrame" enableMouse="true" movable="true" hidden="true" toplevel="true" parent="GuildomaticFrame">
+    <Size>
+      <AbsDimension x="380" y="467"/>
+    </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPRIGHT">
+        <Offset>
+          <AbsDimension x="-2" y="-7"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <Layers>
+      <Layer level="BORDER">
+        <Texture file="Interface\HelpFrame\HelpFrame-TopLeft">
+          <Size>
+            <AbsDimension x="256" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-TopRight">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPRIGHT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-BotLeft">
+          <Size>
+            <AbsDimension x="256" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMLEFT"/>
+          </Anchors>
+        </Texture>
+        <Texture file="Interface\HelpFrame\HelpFrame-BotRight">
+          <Size>
+            <AbsDimension x="128" y="256"/>
+          </Size>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT"/>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Snapshot Detail" justifyH="CENTER">
+          <Size>
+            <AbsDimension x="360" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parent">
+              <Offset>
+                <AbsDimension x="0" y="-20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapNameLabel" inherits="GameFontNormalSmall" justifyH="LEFT" text="Name:">
+          <Size>
+            <AbsDimension x="50" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentTitle">
+              <Offset>
+                <AbsDimension x="23" y="-40"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapName" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="110" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentSnapNameLabel" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapWhenLabel" inherits="GameFontNormalSmall" justifyH="LEFT" text="When:">
+          <Size>
+            <AbsDimension x="50" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentSnapNameLabel">
+              <Offset>
+                <AbsDimension x="0" y="-20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapWhen" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="110" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentSnapWhenLabel" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapDKPLabel" inherits="GameFontNormalSmall" justifyH="LEFT" text="DKP:">
+          <Size>
+            <AbsDimension x="50" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentSnapWhenLabel">
+              <Offset>
+                <AbsDimension x="0" y="-20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentSnapDKP" inherits="GameFontHighlightSmall" justifyH="LEFT">
+          <Size>
+            <AbsDimension x="110" y="14"/>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT" relativeTo="$parentSnapDKPLabel" relativePoint="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentLootTitle" inherits="GameFontNormalSmall" justifyH="CENTER" text="Loot">
+          <Size>
+            <AbsDimension x="280" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentSnapDKPLabel">
+              <Offset>
+                <AbsDimension x="0" y="-20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentPlayersTitle" inherits="GameFontNormalSmall" justifyH="CENTER" text="Players">
+          <Size>
+            <AbsDimension x="280" y="20"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT" relativeTo="$parentLootTitle">
+              <Offset>
+                <AbsDimension x="0" y="-120"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+            <Offset x="-42" y="-3"/>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="$parentDeleteButton" inherits="UIPanelButtonTemplate" text="Delete Snapshot">
+        <Size>
+          <AbsDimension x="132" y="22"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parent">
+            <Offset>
+              <AbsDimension x="-53" y="43"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            Raids:OnDeleteSelectedSnapshotClicked();
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentLootHeader1" inherits="DetailLootHeaderTemplate" text="NAME">
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativeTo="$parentLootTitle">
+	    <Offset>
+	      <AbsDimension x="0" y="-20"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 75);
+	    self.sortType = "name";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentLootHeader2" inherits="DetailLootHeaderTemplate" text="Item">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentLootHeader1" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 120);
+	    self.sortType = "item";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <Button name="$parentLootHeader3" inherits="DetailLootHeaderTemplate" text="DKP/Note">
+	<Anchors>
+	  <Anchor point="LEFT" relativeTo="$parentLootHeader2" relativePoint="RIGHT">
+	    <Offset>
+	      <AbsDimension x="-2" y="0"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 95);
+	    self.sortType = "note";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <ScrollFrame name="$parentLootScrollBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="285" y="80"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentLootHeader1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentLootHeader3">
+            <Offset>
+              <AbsDimension x="-4" y="-80"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
+              function () Raids:UpdateDetailLootScrollBar() end);
+          </OnVerticalScroll>
+          <OnShow>
+            Raids:UpdateDetailLootScrollBar()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+      <Button name="DetailLootEntry1" inherits="DetailLootEntryTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentLootScrollBar" relativePoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2"/>
+            </Offset>
+           </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="DetailLootEntry2" inherits="DetailLootEntryTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailLootEntry1" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailLootEntry3" inherits="DetailLootEntryTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailLootEntry2" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailLootEntry4" inherits="DetailLootEntryTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailLootEntry3" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailLootEntry5" inherits="DetailLootEntryTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailLootEntry4" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+
+      <Button name="$parentPlayerHeader1" inherits="DetailPlayerHeaderTemplate" text="NAME">
+	<Anchors>
+	  <Anchor point="TOPLEFT" relativeTo="$parentPlayersTitle">
+	    <Offset>
+	      <AbsDimension x="0" y="-20"/>
+	    </Offset>
+	  </Anchor>
+	</Anchors>
+	<Scripts>
+	  <OnLoad>
+	    Raids:SetHeaderWidth(self, 285);
+	    self.sortType = "name";
+	  </OnLoad>
+	</Scripts>
+      </Button>
+      <ScrollFrame name="$parentPlayerScrollBar" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="285" y="80"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativePoint="BOTTOM" relativeTo="$parentPlayerHeader1">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentPlayerHeader1">
+            <Offset>
+              <AbsDimension x="-4" y="-80"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
+              function () Raids:UpdateDetailPlayerScrollBar() end);
+          </OnVerticalScroll>
+          <OnShow>
+            Raids:UpdateDetailPlayerScrollBar()
+          </OnShow>
+        </Scripts>
+      </ScrollFrame>
+      <Button name="DetailPlayerEntry1" inherits="DetailPlayerEntryTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parentPlayerScrollBar" relativePoint="TOPLEFT">
+            <Offset>
+              <AbsDimension x="0" y="2"/>
+            </Offset>
+           </Anchor>
+        </Anchors>
+      </Button>
+      <Button name="DetailPlayerEntry2" inherits="DetailPlayerEntryTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailPlayerEntry1" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailPlayerEntry3" inherits="DetailPlayerEntryTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailPlayerEntry2" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailPlayerEntry4" inherits="DetailPlayerEntryTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailPlayerEntry3" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+      <Button name="DetailPlayerEntry5" inherits="DetailPlayerEntryTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="DetailPlayerEntry4" relativePoint="BOTTOMLEFT"/>
+        </Anchors>
+      </Button>
+
+    </Frames>
+    <Scripts>
+      <OnDragStart>
+        self:StartMoving()
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+  </Frame>
+</Ui>
