@@ -11,9 +11,9 @@ GCalendar.lua
 GQueue.lua
 Guildomatic_templates.xml
 Guildomatic.xml
-GRoster.xml
-GRaids.xml
-GAuctions.xml
-GDKP.xml
+Roster.xml
+Raids.xml
+Auctions.xml
+DKP.xml
 GConfig.xml
 Guildomatic_static.lua

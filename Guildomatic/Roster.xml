@@ -2,7 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
-  <Script file="Roster.lua"/>
+  <Script file="GRoster.lua"/>
   
   <Button name="RosterEntryTemplate" virtual="true">
     <Size>
@@ -65,7 +65,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        Roster:OnRosterEntryClick(arg1);
+        GRoster:OnRosterEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -119,7 +119,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  Roster:OnSortColumnClicked(self.sortType);
+	  GRoster:OnSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -213,7 +213,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Roster:SetHeaderWidth(self, 150);
+	    GRoster:SetHeaderWidth(self, 150);
 	    self.sortType = "name";
 	  </OnLoad>
 	</Scripts>
@@ -228,7 +228,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Roster:SetHeaderWidth(self, 125);
+	    GRoster:SetHeaderWidth(self, 125);
 	    self.sortType = "rank";
 	  </OnLoad>
 	</Scripts>
@@ -243,7 +243,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Roster:SetHeaderWidth(self, 30);
+	    GRoster:SetHeaderWidth(self, 30);
 	    self.sortType = "level";
 	  </OnLoad>
 	</Scripts>
@@ -258,7 +258,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Roster:SetHeaderWidth(self, 90);
+	    GRoster:SetHeaderWidth(self, 90);
 	    self.sortType = "class";
 	  </OnLoad>
 	</Scripts>
@@ -277,7 +277,7 @@
         <Scripts>
           <OnClick>
             PlaySound("igMainMenuOptionCheckBoxOn");
-            Roster:Record();
+            GRoster:Record();
           </OnClick>
         </Scripts>
       </Button>
@@ -302,10 +302,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () Roster:UpdateScrollBar() end);
+              function () GRoster:UpdateScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            Roster:UpdateScrollBar()
+            GRoster:UpdateScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>
@@ -407,10 +407,10 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        Roster:OnLoad()
+        GRoster:OnLoad()
       </OnLoad>
       <OnShow>
-        Roster:OnShow()
+        GRoster:OnShow()
       </OnShow>
     </Scripts>
   </Frame>
