@@ -2,7 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
-  <Script file="DKP.lua"/>
+  <Script file="GDKP.lua"/>
 
   <Button name="DKPEntryTemplate" virtual="true">
     <Size>
@@ -53,7 +53,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        DKP:OnDKPEntryClick(arg1);
+        GDKP:OnDKPEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -107,7 +107,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  DKP:OnSortColumnClicked(self.sortType);
+	  GDKP:OnSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -174,7 +174,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    DKP:SetHeaderWidth(self, 220);
+	    GDKP:SetHeaderWidth(self, 220);
 	    self.sortType = "name";
 	  </OnLoad>
 	</Scripts>
@@ -189,7 +189,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    DKP:SetHeaderWidth(self, 110);
+	    GDKP:SetHeaderWidth(self, 110);
 	    self.sortType = "class";
 	  </OnLoad>
 	</Scripts>
@@ -204,7 +204,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    DKP:SetHeaderWidth(self, 58);
+	    GDKP:SetHeaderWidth(self, 58);
 	    self.sortType = "dkp";
 	  </OnLoad>
 	</Scripts>
@@ -228,10 +228,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () DKP:UpdateScrollBar() end);
+              function () GDKP:UpdateScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            DKP:UpdateScrollBar()
+            GDKP:UpdateScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>
@@ -342,10 +342,10 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        DKP:OnLoad()
+        GDKP:OnLoad()
       </OnLoad>
       <OnShow>
-        DKP:OnShow()
+        GDKP:OnShow()
       </OnShow>
     </Scripts>
   </Frame>

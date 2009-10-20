@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
   
-  <Script file="Raids.lua"/>
+  <Script file="GRaids.lua"/>
 
   <Button name="RaidEntryTemplate" virtual="true">
     <Size>
@@ -87,7 +87,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        Raids:OnRaidEntryClick(arg1);
+        GRaids:OnRaidEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -142,7 +142,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  Raids:OnSortColumnClicked(self.sortType);
+	  GRaids:OnSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -222,7 +222,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        Raids:OnDetailLootEntryClick(arg1);
+        GRaids:OnDetailLootEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -277,7 +277,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  Raids:OnDetailLootSortColumnClicked(self.sortType);
+	  GRaids:OnDetailLootSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -333,7 +333,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        Raids:OnDetailPlayerEntryClick(arg1);
+        GRaids:OnDetailPlayerEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -388,7 +388,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  Raids:OnDetailPlayerSortColumnClicked(self.sortType);
+	  GRaids:OnDetailPlayerSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -480,7 +480,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 75);
+	    GRaids:SetHeaderWidth(self, 75);
 	    self.sortType = "event";
 	  </OnLoad>
 	</Scripts>
@@ -495,7 +495,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 90);
+	    GRaids:SetHeaderWidth(self, 90);
 	    self.sortType = "zone";
 	  </OnLoad>
 	</Scripts>
@@ -510,7 +510,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 115);
+	    GRaids:SetHeaderWidth(self, 115);
 	    self.sortType = "time";
 	  </OnLoad>
 	</Scripts>
@@ -525,7 +525,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 40);
+	    GRaids:SetHeaderWidth(self, 40);
 	    self.sortType = "dkp";
 	  </OnLoad>
 	</Scripts>
@@ -540,7 +540,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 40);
+	    GRaids:SetHeaderWidth(self, 40);
 	    self.sortType = "playerCount";
 	  </OnLoad>
 	</Scripts>
@@ -555,7 +555,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 40);
+	    GRaids:SetHeaderWidth(self, 40);
 	    self.sortType = "lootCount";
 	  </OnLoad>
 	</Scripts>
@@ -579,10 +579,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () Raids:UpdateScrollBar() end);
+              function () GRaids:UpdateScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            Raids:UpdateScrollBar()
+            GRaids:UpdateScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>
@@ -802,20 +802,20 @@
         <Scripts>
           <OnClick>
             PlaySound("igMainMenuOptionCheckBoxOn");
-            Raids:OnTakeSnapshotClicked();
+            GRaids:OnTakeSnapshotClicked();
           </OnClick>
         </Scripts>
       </Button>
     </Frames>
     <Scripts>
       <OnHide>
-        Raids:OnHide()
+        GRaids:OnHide()
       </OnHide>
       <OnLoad>
-        Raids:OnLoad()
+        GRaids:OnLoad()
       </OnLoad>
       <OnShow>
-        Raids:OnShow()
+        GRaids:OnShow()
       </OnShow>
     </Scripts>
   </Frame>
@@ -998,7 +998,7 @@
         <Scripts>
           <OnClick>
             PlaySound("igMainMenuOptionCheckBoxOn");
-            Raids:OnDeleteSelectedSnapshotClicked();
+            GRaids:OnDeleteSelectedSnapshotClicked();
           </OnClick>
         </Scripts>
       </Button>
@@ -1012,7 +1012,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 75);
+	    GRaids:SetHeaderWidth(self, 75);
 	    self.sortType = "name";
 	  </OnLoad>
 	</Scripts>
@@ -1027,7 +1027,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 120);
+	    GRaids:SetHeaderWidth(self, 120);
 	    self.sortType = "item";
 	  </OnLoad>
 	</Scripts>
@@ -1042,7 +1042,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 95);
+	    GRaids:SetHeaderWidth(self, 95);
 	    self.sortType = "note";
 	  </OnLoad>
 	</Scripts>
@@ -1066,10 +1066,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () Raids:UpdateDetailLootScrollBar() end);
+              function () GRaids:UpdateDetailLootScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            Raids:UpdateDetailLootScrollBar()
+            GRaids:UpdateDetailLootScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>
@@ -1113,7 +1113,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Raids:SetHeaderWidth(self, 285);
+	    GRaids:SetHeaderWidth(self, 285);
 	    self.sortType = "name";
 	  </OnLoad>
 	</Scripts>
@@ -1137,10 +1137,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () Raids:UpdateDetailPlayerScrollBar() end);
+              function () GRaids:UpdateDetailPlayerScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            Raids:UpdateDetailPlayerScrollBar()
+            GRaids:UpdateDetailPlayerScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>

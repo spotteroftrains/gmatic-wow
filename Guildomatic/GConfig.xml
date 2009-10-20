@@ -17,7 +17,7 @@
         <Scripts>
           <OnClick>
             PlaySound("igMainMenuOptionCheckBoxOn");
-            Raids:OnClearAllClicked();
+            GRaids:OnClearAllClicked();
           </OnClick>
         </Scripts>
       </Button>
@@ -35,7 +35,7 @@
         <Scripts>
           <OnClick>
             PlaySound("igMainMenuOptionCheckBoxOn");
-            Auctions:OnClearAllClicked();
+            GAuctions:OnClearAllClicked();
           </OnClick>
         </Scripts>
       </Button>

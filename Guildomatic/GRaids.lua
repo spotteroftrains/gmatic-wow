@@ -1,4 +1,4 @@
-Raids = {}
+GRaids = {}
 
 local sortDirs = {}
 
@@ -27,70 +27,70 @@ local UDKP_LootColorMap = {
 local selectedSnap = nil
 local selectedLoot = nil
 
-function Raids:Command (cmd)
+function GRaids:Command (cmd)
    local commands = GUtil:ParseCommands(cmd)
    local firstWord = commands[1];
 
-   GUtil:Debug("Raids:Command [cmd=" .. cmd .. "].")
+   GUtil:Debug("GRaids:Command [cmd=" .. cmd .. "].")
 
    if GUtil:Blank(cmd) then
-      Raids:PrintHelp()
+      GRaids:PrintHelp()
 
    elseif (cmd == "clear") then
-      Raids:DoClearAllSnapshots()
+      GRaids:DoClearAllSnapshots()
 
    elseif (firstWord == "ignore") then
-      Raids:CommandIgnore(cmd, commands)
+      GRaids:CommandIgnore(cmd, commands)
 
    elseif (cmd == "list") then
-      Raids:DoListSnapshots()
+      GRaids:DoListSnapshots()
 
    elseif (firstWord == "loot") then
       local lootQuality = commands[2]
-      Raids:SetMinimumLootQuality(lootQuality)
+      GRaids:SetMinimumLootQuality(lootQuality)
 
    elseif (firstWord == "note") then
       local snapNo = commands[2]
       local itemNo = commands[3]
       local note = commands[4]
-      Raids:SetLootNote(snapNo, itemNo, note)
+      GRaids:SetLootNote(snapNo, itemNo, note)
 
    elseif (firstWord == "remove") then
       local snapNo = commands[2]
-      Raids:DoRemoveSnapshot(snapNo)
+      GRaids:DoRemoveSnapshot(snapNo)
 
    else
-      Raids:DoBossSnapshot(cmd)
+      GRaids:DoBossSnapshot(cmd)
    end
 end
 
-function Raids:CommandIgnore (cmd, commands)
+function GRaids:CommandIgnore (cmd, commands)
    local subCommand = commands[2]
 
    if (subCommand == "remove") then
       -- handle remove ignored item name
-      Raids:DoLootIgnoreRemove(cmd, commands)
+      GRaids:DoLootIgnoreRemove(cmd, commands)
 
    elseif (subCommand == "list") then
       -- list currently ignored items
-      Raids:DoLootIgnoreList()
+      GRaids:DoLootIgnoreList()
 
    elseif (subCommand == "clear") then
       -- clear ignored items
-      Raids:DoLootIgnoreClear()
+      GRaids:DoLootIgnoreClear()
 
    elseif (subCommand) then
       -- attempt to add a new ignored item
       -- TODO: should this require "add" explicit subcommand?
-      Raids:DoLootIgnoreAdd(cmd)
+      GRaids:DoLootIgnoreAdd(cmd)
 
    else
       -- print ignore help sub-menu
-      Raids:PrintLootIgnoreHelp()
+      GRaids:PrintLootIgnoreHelp()
    end
 end
 
-function Raids:DoBossSnapshot (cmd)
+function GRaids:DoBossSnapshot (cmd)
    -- TODO: fix parsing to work with obscure boss names that old
    -- mod failed to parse properly; need to dig up examples
    local _, _, name, dkp = string.find(cmd, "^(.+) (.+)$");
@@ -98,21 +98,21 @@ function Raids:DoBossSnapshot (cmd)
       GUtil:PrintError("Invalid snapshot command.");
 
    else
-      Raids:TakeSnapshot(name, dkp);
+      GRaids:TakeSnapshot(name, dkp);
    end
 end
 
-function Raids:DoClearAllSnapshots ()
+function GRaids:DoClearAllSnapshots ()
    UDKP_Snapshots = { };
    GUtil:Print("Cleared all snapshots.")
 
-   Raids:PopulateSnapFields();
-   Raids:UpdateScrollBar();
+   GRaids:PopulateSnapFields();
+   GRaids:UpdateScrollBar();
 end
 
-function Raids:DoListSnapshots ()
+function GRaids:DoListSnapshots ()
    local num = 0;
-   local snaps = Raids:GetSnapsBySnapTime()
+   local snaps = GRaids:GetSnapsBySnapTime()
 
    for k, v in pairs(snaps) do
       local snapshot_time;
@@ -147,7 +147,7 @@ function Raids:DoListSnapshots ()
    end
 end
 
-function Raids:DoLootIgnoreAdd (cmd)
+function GRaids:DoLootIgnoreAdd (cmd)
    -- TODO: we should really store loot uniquely, in a set or
    -- otherwise making sure any given item is only in the list once
    local _, _, item = string.find(cmd, "^ignore (.+)$");
@@ -156,12 +156,12 @@ function Raids:DoLootIgnoreAdd (cmd)
    tinsert(GM_Config["IgnoredLoot"], 1, { ["item"] = item });
 end
 
-function Raids:DoLootIgnoreClear ()
+function GRaids:DoLootIgnoreClear ()
    GM_Config["IgnoredLoot"] = {};
    GUtil:Print("Cleared loot ignore list.");
 end
 
-function Raids:DoLootIgnoreList ()
+function GRaids:DoLootIgnoreList ()
    local num = 0;
 
    GUtil:Print("Loot to ignore:");
@@ -177,7 +177,7 @@ function Raids:DoLootIgnoreList ()
    end
 end
 
-function Raids:DoLootIgnoreRemove (cmd, commands)
+function GRaids:DoLootIgnoreRemove (cmd, commands)
    if (commands[3]) then
       local _, _, item = string.find(cmd, "^ignore remove (.+)$");
       item = GUtil:trim(item)
@@ -202,10 +202,10 @@ function Raids:DoLootIgnoreRemove (cmd, commands)
    GUtil:PrintError("Invalid loot ignore remove command.")
 end
 
-function Raids:DoRemoveSnapshot (snapNo)
+function GRaids:DoRemoveSnapshot (snapNo)
    if (not GUtil:Blank(snapNo)) then
       local snum = tonumber(snapNo);
-      local snaps = Raids:GetSnapsBySnapTime()
+      local snaps = GRaids:GetSnapsBySnapTime()
 
       if (snum > 0 and snaps and table.getn(UDKP_Snapshots) >= snum) then
          local rmIndex = snaps[snum]["base_snap_index"]
@@ -214,7 +214,7 @@ function Raids:DoRemoveSnapshot (snapNo)
          -- update the visual display to reflect the change
          selectedSnap = nil
          selectedLoot = nil
-         Raids:UpdateScrollBar()
+         GRaids:UpdateScrollBar()
          GuildomaticSnapDetailFrame:Hide()
 
          return true
@@ -230,20 +230,20 @@ function Raids:DoRemoveSnapshot (snapNo)
    return false;
 end
 
-function Raids:GetLatestSnapshot ()
-   local snaps = Raids:GetSnapsBySnapTime()
+function GRaids:GetLatestSnapshot ()
+   local snaps = GRaids:GetSnapsBySnapTime()
    if (not snaps) then
       return nil
    else
-      return snaps[Raids:GetSize()]
+      return snaps[GRaids:GetSize()]
    end
 end
 
-function Raids:GetSize ()
+function GRaids:GetSize ()
     return table.getn(UDKP_Snapshots)
 end
 
-function Raids:GetSnapsBySnapTime ()
+function GRaids:GetSnapsBySnapTime ()
    -- build a list of all snaps sorted by snap time
    local snaps = {}
    for key, value in pairs(UDKP_Snapshots) do
@@ -256,7 +256,7 @@ function Raids:GetSnapsBySnapTime ()
    return snaps
 end
 
-function Raids:GetSortComparator ()
+function GRaids:GetSortComparator ()
    local sortField = GuildomaticRaidsTabFrame.sortType
 
    local sfunc = nil
@@ -307,11 +307,11 @@ function Raids:GetSortComparator ()
    if (reverse) then return GUtil:ReverseComparator(sfunc) else return sfunc end
 end
 
-function Raids:OnClearAllClicked ()
-   Raids:DoClearAllSnapshots();
+function GRaids:OnClearAllClicked ()
+   GRaids:DoClearAllSnapshots();
 end
 
-function Raids:FindSnapshotIndex (allSnaps, soughtSnap)
+function GRaids:FindSnapshotIndex (allSnaps, soughtSnap)
    for key, snap in pairs(allSnaps) do
       if (snap == soughtSnap) then
          return key
@@ -321,67 +321,67 @@ function Raids:FindSnapshotIndex (allSnaps, soughtSnap)
    return nil
 end
 
-function Raids:OnDeleteSelectedSnapshotClicked ()
-   local snaps = Raids:GetSnapsBySnapTime()
-   local selectedSnapNo = Raids:FindSnapshotIndex(snaps, selectedSnap)
-   Raids:DoRemoveSnapshot(selectedSnapNo)
+function GRaids:OnDeleteSelectedSnapshotClicked ()
+   local snaps = GRaids:GetSnapsBySnapTime()
+   local selectedSnapNo = GRaids:FindSnapshotIndex(snaps, selectedSnap)
+   GRaids:DoRemoveSnapshot(selectedSnapNo)
 end
 
-function Raids:OnDetailLootEntryClick (button)
+function GRaids:OnDetailLootEntryClick (button)
    GUtil:Debug("Detail loot entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticSnapDetailFrameLootScrollBar.selectedEntry = 
       getglobal("DetailLootEntry" .. this:GetID()).entryIndex;
 
-   Raids:UpdateDetailLootScrollBar()
+   GRaids:UpdateDetailLootScrollBar()
 end
 
-function Raids:OnDetailPlayerEntryClick (button)
+function GRaids:OnDetailPlayerEntryClick (button)
    GUtil:Debug("Detail player entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticSnapDetailFramePlayerScrollBar.selectedEntry = 
       getglobal("DetailPlayerEntry" .. this:GetID()).entryIndex;
 
-   Raids:UpdateDetailPlayerScrollBar()
+   GRaids:UpdateDetailPlayerScrollBar()
 end
 
-function Raids:OnDetailLootSortColumnClicked (sortType)
+function GRaids:OnDetailLootSortColumnClicked (sortType)
    -- TODO
 end
 
-function Raids:OnDetailPlayerSortColumnClicked (sortType)
+function GRaids:OnDetailPlayerSortColumnClicked (sortType)
    -- TODO
 end
 
-function Raids:OnHide ()
---    GUtil:Print("Raids:OnHide")
+function GRaids:OnHide ()
+--    GUtil:Print("GRaids:OnHide")
 
    -- make sure to hide the snap detail window if present
    GuildomaticSnapDetailFrame:Hide()
 end
 
-function Raids:OnLoad ()
+function GRaids:OnLoad ()
    GuildomaticRaidsTabFrame.sortType = "time"
 end
 
-function Raids:OnRaidEntryClick (button)
+function GRaids:OnRaidEntryClick (button)
    GUtil:Debug("Raid entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticRaidsTabFrameScrollBar.selectedEntry = 
       getglobal("RaidEntry" .. this:GetID()).entryIndex;
 
-   Raids:UpdateScrollBar();
+   GRaids:UpdateScrollBar();
 
-   Raids:UpdateSnapDetail()
+   GRaids:UpdateSnapDetail()
 
    GuildomaticSnapDetailFrame:Show()
 end
 
-function Raids:OnShow ()
---    GUtil:Print("Raids:OnShow")
+function GRaids:OnShow ()
+--    GUtil:Print("GRaids:OnShow")
 
-   Raids:PopulateSnapFields();
-   Raids:UpdateScrollBar();
+   GRaids:PopulateSnapFields();
+   GRaids:UpdateScrollBar();
 end
 
-function Raids:OnSortColumnClicked (sortType)
+function GRaids:OnSortColumnClicked (sortType)
    -- allow flipping sort direction or restoring previous direction by column
    GuildomaticRaidsTabFrame.sortDir =
       GUtil:UpdateSortDirection(sortDirs, GuildomaticRaidsTabFrame.sortType, sortType)
@@ -390,13 +390,13 @@ function Raids:OnSortColumnClicked (sortType)
    GuildomaticRaidsTabFrame.sortType = sortType   
 
    -- refresh the view
-   Raids:UpdateScrollBar();
+   GRaids:UpdateScrollBar();
 end
 
-function Raids:OnVariablesLoaded ()
+function GRaids:OnVariablesLoaded ()
 end
 
-function Raids:OnTakeSnapshotClicked ()
+function GRaids:OnTakeSnapshotClicked ()
    -- we should pre-fill the name text field with the most recently
    -- killed boss name; or default to next-snapshot-number
    local snapName = GuildomaticRaidsTabFrameSnapName:GetText();
@@ -412,10 +412,10 @@ function Raids:OnTakeSnapshotClicked ()
    -- for the matching raid snapshot event, if any; default to 0
 
    -- attempt to take the snapshot with the user-entered info
-   Raids:TakeSnapshot(snapName, dkp)
+   GRaids:TakeSnapshot(snapName, dkp)
 end
 
-function Raids:PopulateSnapFields ()
+function GRaids:PopulateSnapFields ()
    local defaultSnapName = ""
 
    -- set the snap name text field contents if currently empty
@@ -433,7 +433,7 @@ function Raids:PopulateSnapFields ()
 --    end
 end
 
-function Raids:PrintHelp ()
+function GRaids:PrintHelp ()
    -- print snapshot-command-specific sub-commands
    Guildomatic:PrintHelpLine("snapshot",
                              "<name> <dkp> [snapshot group members]")
@@ -462,7 +462,7 @@ function Raids:PrintHelp ()
    end
 end
 
-function Raids:PrintLootIgnoreHelp ()
+function GRaids:PrintLootIgnoreHelp ()
    Guildomatic:PrintHelpLine("snapshot ignore", 
                              "<item> [add item to loot ignore list]")
    Guildomatic:PrintHelpLine("snapshot ignore remove", 
@@ -472,7 +472,7 @@ function Raids:PrintLootIgnoreHelp ()
                              "[clear loot ignore list]")
 end
 
-function Raids:RecordLoot (self, event, ...)
+function GRaids:RecordLoot (self, event, ...)
    local msg = select(1, ...)
 
 --    GUtil:Debug("Looting " .. msg .. " end.");
@@ -495,7 +495,7 @@ function Raids:RecordLoot (self, event, ...)
             sPlayer = UnitName("player")
          end
 
-         local snap = Raids:GetLatestSnapshot()
+         local snap = GRaids:GetLatestSnapshot()
 
          if (not snap) then
             GUtil:Print("Must create snapshot before loot can be " ..
@@ -550,26 +550,26 @@ function Raids:RecordLoot (self, event, ...)
 
    if (recordedLoot) then
       -- update our view to reflect any change in loot count
-      Raids:UpdateScrollBar()
-      Raids:UpdateSnapDetail()
+      GRaids:UpdateScrollBar()
+      GRaids:UpdateSnapDetail()
    end
 
    -- let the rest of the wow interface do as it will
    return false, ...;
 end
 
-function Raids:SetHeaderWidth (frame, width)
+function GRaids:SetHeaderWidth (frame, width)
    frame:SetWidth(width);
    getglobal(frame:GetName() .. "Middle"):SetWidth(width - 9);
 end
 
-function Raids:SetLootNote (snapNo, itemNo, note)
+function GRaids:SetLootNote (snapNo, itemNo, note)
    if ((not GUtil:Blank(snapNo)) and
        (not GUtil:Blank(itemNo)) and
        (not GUtil:Blank(note))) then
       -- convert snap and item number from string to int
       local snum = tonumber(snapNo);
-      local snaps = Raids:GetSnapsBySnapTime()
+      local snaps = GRaids:GetSnapsBySnapTime()
       local inum = tonumber(itemNo);
 
       if (snum and inum) then
@@ -593,7 +593,7 @@ function Raids:SetLootNote (snapNo, itemNo, note)
          item["note"] = note;
          GUtil:Print("Recorded " .. note .. " for " .. item["item"] .. ".");
 
-         Raids:UpdateSnapDetail()
+         GRaids:UpdateSnapDetail()
 
          return true
       end
@@ -603,7 +603,7 @@ function Raids:SetLootNote (snapNo, itemNo, note)
    return false
 end
 
-function Raids:SetMinimumLootQuality (lootQuality)
+function GRaids:SetMinimumLootQuality (lootQuality)
    if (lootQuality) then
       local qual = string.lower(lootQuality);
 
@@ -618,7 +618,7 @@ function Raids:SetMinimumLootQuality (lootQuality)
                     "uncommon, rare, epic, legendary, artifact.");
 end
 
-function Raids:SnapshotRecordPlayer (unitid, players)
+function GRaids:SnapshotRecordPlayer (unitid, players)
     local player, online, class = 
       UnitName(unitid), UnitIsConnected(unitid), UnitClass(unitid);
 
@@ -639,8 +639,8 @@ function Raids:SnapshotRecordPlayer (unitid, players)
     --GmaticDKP_RecordDKP(player, tonumber(dkp));
 end
 
-function Raids:TakeSnapshot (snapName, dkp)
-    GUtil:Debug("Raids:TakeSnapshot [snapName=" .. snapName .. 
+function GRaids:TakeSnapshot (snapName, dkp)
+    GUtil:Debug("GRaids:TakeSnapshot [snapName=" .. snapName .. 
                 ", dkp=" .. dkp .. "].")
 
     -- make sure we're in a raid/party as prerequisite
@@ -672,7 +672,7 @@ function Raids:TakeSnapshot (snapName, dkp)
         -- we're in a raid, so take note of each raid member
         playerCount = GetNumRaidMembers();
         for i = 1, playerCount, 1 do
-            Raids:SnapshotRecordPlayer("raid" .. i, players);
+            GRaids:SnapshotRecordPlayer("raid" .. i, players);
         end
 
      else
@@ -681,11 +681,11 @@ function Raids:TakeSnapshot (snapName, dkp)
         -- take note of each party member other than ourselves
         playerCount = GetNumPartyMembers();
         for i = 1, playerCount, 1 do
-            Raids:SnapshotRecordPlayer("party" .. i, players);
+            GRaids:SnapshotRecordPlayer("party" .. i, players);
         end
 
         -- and then record our own info as well
-        Raids:SnapshotRecordPlayer("player", players);
+        GRaids:SnapshotRecordPlayer("player", players);
 
         -- finally, add one to playerCount as GetNumPartyMembers()
         -- returns player count excluding ourselves and we want to
@@ -713,11 +713,11 @@ function Raids:TakeSnapshot (snapName, dkp)
                 playerCount .. " players.");
 
     -- update display to reflect newly added snapshot
-    Raids:PopulateSnapFields();
-    Raids:UpdateScrollBar();
+    GRaids:PopulateSnapFields();
+    GRaids:UpdateScrollBar();
 end
 
-function Raids:UpdateDetailLootScrollBar ()
+function GRaids:UpdateDetailLootScrollBar ()
    local offset = FauxScrollFrame_GetOffset(GuildomaticSnapDetailFrameLootScrollBar)
    local lootCount = table.getn(selectedSnap["loot"])
    local totalRowCount = lootCount
@@ -728,7 +728,7 @@ function Raids:UpdateDetailLootScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by the configured column
---    table.sort(UDKP_Snapshots, Raids:GetSortComparator())
+--    table.sort(UDKP_Snapshots, GRaids:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;
@@ -765,7 +765,7 @@ function Raids:UpdateDetailLootScrollBar ()
    end
 end
 
-function Raids:UpdateDetailPlayerScrollBar ()
+function GRaids:UpdateDetailPlayerScrollBar ()
    local offset = FauxScrollFrame_GetOffset(GuildomaticSnapDetailFramePlayerScrollBar)
    local playerCount = table.getn(selectedSnap["players"])
    local totalRowCount = playerCount
@@ -777,7 +777,7 @@ function Raids:UpdateDetailPlayerScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by the configured column
---    table.sort(UDKP_Snapshots, Raids:GetSortComparator())
+--    table.sort(UDKP_Snapshots, GRaids:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;
@@ -812,9 +812,9 @@ function Raids:UpdateDetailPlayerScrollBar ()
    end
 end
 
-function Raids:UpdateScrollBar ()
+function GRaids:UpdateScrollBar ()
    local offset = FauxScrollFrame_GetOffset(GuildomaticRaidsTabFrameScrollBar)
-   local totalRowCount = Raids:GetSize();
+   local totalRowCount = GRaids:GetSize();
    local rowHeight = 16
    local displayRowCount = 16
 
@@ -823,7 +823,7 @@ function Raids:UpdateScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by the configured column
-   table.sort(UDKP_Snapshots, Raids:GetSortComparator())
+   table.sort(UDKP_Snapshots, GRaids:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;
@@ -866,7 +866,7 @@ function Raids:UpdateScrollBar ()
    end
 end
 
-function Raids:UpdateSnapDetail ()
+function GRaids:UpdateSnapDetail ()
    -- deal gracefully if there's no selected snapshot record
    if (selectedSnap == nil) then
       return
@@ -878,6 +878,6 @@ function Raids:UpdateSnapDetail ()
    GuildomaticSnapDetailFrameSnapDKP:SetText(selectedSnap["dkp"])
 
    -- and refresh the loot and player displays for the selected snapshot
-   Raids:UpdateDetailLootScrollBar()
-   Raids:UpdateDetailPlayerScrollBar()
+   GRaids:UpdateDetailLootScrollBar()
+   GRaids:UpdateDetailPlayerScrollBar()
 end

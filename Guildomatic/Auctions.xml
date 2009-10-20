@@ -2,7 +2,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
 
-  <Script file="Auctions.lua"/>
+  <Script file="GAuctions.lua"/>
 
   <Button name="AuctionsEntryTemplate" virtual="true">
     <Size>
@@ -65,7 +65,7 @@
         this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
       </OnLoad>
       <OnClick>
-        Auctions:OnAuctionsEntryClick(arg1);
+        GAuctions:OnAuctionsEntryClick(arg1);
       </OnClick>
     </Scripts>
     <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
@@ -119,7 +119,7 @@
     <Scripts>
       <OnClick>
 	if ( self.sortType ) then
-	  Auctions:OnSortColumnClicked(self.sortType);
+	  GAuctions:OnSortColumnClicked(self.sortType);
 	end
 	PlaySound("igMainMenuOptionCheckBoxOn");
       </OnClick>
@@ -186,7 +186,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Auctions:SetHeaderWidth(self, 115);
+	    GAuctions:SetHeaderWidth(self, 115);
 	    self.sortType = "end";
 	  </OnLoad>
 	</Scripts>
@@ -201,7 +201,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Auctions:SetHeaderWidth(self, 145);
+	    GAuctions:SetHeaderWidth(self, 145);
 	    self.sortType = "item";
 	  </OnLoad>
 	</Scripts>
@@ -216,7 +216,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Auctions:SetHeaderWidth(self, 98);
+	    GAuctions:SetHeaderWidth(self, 98);
 	    self.sortType = "winner";
 	  </OnLoad>
 	</Scripts>
@@ -231,7 +231,7 @@
 	</Anchors>
 	<Scripts>
 	  <OnLoad>
-	    Auctions:SetHeaderWidth(self, 40);
+	    GAuctions:SetHeaderWidth(self, 40);
 	    self.sortType = "highbid";
 	  </OnLoad>
 	</Scripts>
@@ -255,10 +255,10 @@
         <Scripts>
           <OnVerticalScroll>
             FauxScrollFrame_OnVerticalScroll(this, offset, 16, 
-              function () Auctions:UpdateScrollBar() end);
+              function () GAuctions:UpdateScrollBar() end);
           </OnVerticalScroll>
           <OnShow>
-            Auctions:UpdateScrollBar()
+            GAuctions:UpdateScrollBar()
           </OnShow>
         </Scripts>
       </ScrollFrame>
@@ -369,10 +369,10 @@
     </Frames>
     <Scripts>
       <OnLoad>
-        Auctions:OnLoad()
+        GAuctions:OnLoad()
       </OnLoad>
       <OnShow>
-        Auctions:OnShow()
+        GAuctions:OnShow()
       </OnShow>
     </Scripts>
   </Frame>

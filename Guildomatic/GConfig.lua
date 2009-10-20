@@ -47,25 +47,25 @@ local RootConfigPanel = nil
 function GConfig:DKPLookupButton_OnClick (self)
    if (self:GetChecked()) then
       PlaySound("igMainMenuOptionCheckBoxOff");
-      DKP:DoEnableLookups()
+      GDKP:DoEnableLookups()
 
    else
       PlaySound("igMainMenuOptionCheckBoxOn");
-      DKP:DoDisableLookups()
+      GDKP:DoDisableLookups()
    end
 end
 
 function GConfig:DKPShowZeroButton_OnClick (self)
    if (self:GetChecked()) then
       PlaySound("igMainMenuOptionCheckBoxOff");
-      DKP:DoEnableShowZeroPlayers()
+      GDKP:DoEnableShowZeroPlayers()
 
    else
       PlaySound("igMainMenuOptionCheckBoxOn");
-      DKP:DoDisableShowZeroPlayers()
+      GDKP:DoDisableShowZeroPlayers()
    end
 
-   DKP:UpdateScrollBar()
+   GDKP:UpdateScrollBar()
 end
 
 function GConfig:GetDefaultConfig ()

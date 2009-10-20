@@ -32,7 +32,8 @@ UDKP_GuildRoster = {}
 UDKP_Players = {}
 UDKP_Snapshots = {}
 
-Guildomatic_Submodules = { 'Auctions', 'GConfig', 'GQueue', 'DKP', 'Raids', 'Roster' }
+Guildomatic_Submodules = { 
+    'GAuctions', 'GConfig', 'GQueue', 'GDKP', 'GRaids', 'GRoster' }
 
 Guildomatic.version = GetAddOnMetadata("Guildomatic", "Version")
 Guildomatic.versionstring = 
@@ -47,7 +48,7 @@ function Guildomatic:Command (args)
       Guildomatic:ToggleWindow();
 
    elseif (cmd == "auction") then
-      Auctions:Command(params);
+      GAuctions:Command(params);
 
    elseif (cmd == "cal") then
       GCalendar:Command(params);
@@ -56,16 +57,16 @@ function Guildomatic:Command (args)
       GConfig:Show();
 
    elseif (cmd == "dkp") then
-      DKP:Command(params);
+      GDKP:Command(params);
 
    elseif (cmd == "queue") then
       GQueue:Command(params);
 
    elseif (cmd == "snapshot" or cmd == "raid") then
-      Raids:Command(params);
+      GRaids:Command(params);
 
    elseif (cmd == "roster") then
-      Roster:Command(params);
+      GRoster:Command(params);
 
    elseif (cmd == "version") then
       GUtil:Print(Guildomatic.versionstring)
@@ -101,7 +102,7 @@ function Guildomatic:OnLoad ()
    this:RegisterForDrag("LeftButton");
    
    ChatFrame_AddMessageEventFilter("CHAT_MSG_LOOT", 
-                                   function (...) return Raids:RecordLoot(...) end)
+                                   function (...) return GRaids:RecordLoot(...) end)
    ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER",
                                    function (...) return Guildomatic:OnWhisper(...) end)
    ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", 
@@ -184,7 +185,7 @@ function Guildomatic:OnEvent (event)
          local killed = arg7
          for k, v in pairs(UDKP_Events) do
             if (killed == v["name"]) then
-               Raids:TakeSnapshot(v["name"], v["dkp"])
+               GRaids:TakeSnapshot(v["name"], v["dkp"])
                break
             end
          end
@@ -205,7 +206,7 @@ function Guildomatic:OnShow ()
 end
 
 function Guildomatic_OnUpdate (elapsed)
-   Auctions:OnUpdate(elapsed)
+   GAuctions:OnUpdate(elapsed)
    GQueue:OnUpdate(elapsed)
 end
 
@@ -224,9 +225,9 @@ function Guildomatic:OnWhisper (self, event, ...)
    end
 
    local handled = false
-   handled = Auctions:OnWhisper(msg, param, cmd, requestor, commands)
+   handled = GAuctions:OnWhisper(msg, param, cmd, requestor, commands)
    if (not handled) then
-      handled = DKP:OnWhisper(msg, param, cmd, requestor, commands)
+      handled = GDKP:OnWhisper(msg, param, cmd, requestor, commands)
       if (not handled) then
          handled = GQueue:OnWhisper(msg, param, cmd, requestor, commands)
       end

@@ -1,20 +1,20 @@
-Roster = {}
+GRoster = {}
 
 local sortDirs = {}
 
-function Roster:Command (cmd)
-   GUtil:Debug("Roster:Command [cmd=" .. cmd .. "].")
+function GRoster:Command (cmd)
+   GUtil:Debug("GRoster:Command [cmd=" .. cmd .. "].")
 
    -- the only command right now is to record the current roster
-   Roster:Record()
+   GRoster:Record()
 end
  
 
-function Roster:GetSize ()
+function GRoster:GetSize ()
     return table.getn(UDKP_GuildRoster)
 end
 
-function Roster:GetSortComparator ()
+function GRoster:GetSortComparator ()
    local sortField = GuildomaticRosterTabFrame.sortType
    local sfunc = nil
 
@@ -52,23 +52,23 @@ function Roster:GetSortComparator ()
    if (reverse) then return GUtil:ReverseComparator(sfunc) else return sfunc end
 end
 
-function Roster:OnLoad ()
+function GRoster:OnLoad ()
    GuildomaticRosterTabFrame.sortType = "name"
 end
 
-function Roster:OnRosterEntryClick (button)
+function GRoster:OnRosterEntryClick (button)
    GUtil:Debug("Roster entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticRosterTabFrameScrollBar.selectedEntry = 
       getglobal("RosterEntry" .. this:GetID()).entryIndex;
 
-   Roster:UpdateScrollBar();
+   GRoster:UpdateScrollBar();
 end
 
-function Roster:OnShow ()    
-   Roster:UpdateStatus()
+function GRoster:OnShow ()    
+   GRoster:UpdateStatus()
 end
 
-function Roster:OnSortColumnClicked (sortType)
+function GRoster:OnSortColumnClicked (sortType)
    -- allow flipping sort direction or restoring previous direction by column
    GuildomaticRosterTabFrame.sortDir =
       GUtil:UpdateSortDirection(sortDirs, GuildomaticRosterTabFrame.sortType, 
@@ -78,14 +78,14 @@ function Roster:OnSortColumnClicked (sortType)
    GuildomaticRosterTabFrame.sortType = sortType
 
    -- refresh the view
-   Roster:UpdateScrollBar();
+   GRoster:UpdateScrollBar();
 end
 
-function Roster:OnVariablesLoaded ()
-   Roster:UpdateStatus();
+function GRoster:OnVariablesLoaded ()
+   GRoster:UpdateStatus();
 end
 
-function Roster:Record ()
+function GRoster:Record ()
     if (not IsInGuild()) then
         GUtil:Print("No roster to record as you're not in a guild.")
         return
@@ -127,21 +127,21 @@ function Roster:Record ()
     GM_Config["RosterSnapAt"] = GUtil:GetDateTime()
 
     -- refresh the roster view display
-    Roster:UpdateStatus()
+    GRoster:UpdateStatus()
 
     GUtil:Print("Recorded " .. num .. " guild members in " .. guildName .. 
                 " at " .. GM_Config["RosterSnapAt"] .. ".")
  end
 
-function Roster:SetHeaderWidth (frame, width)
+function GRoster:SetHeaderWidth (frame, width)
    frame:SetWidth(width);
    getglobal(frame:GetName().."Middle"):SetWidth(width - 9);
 end
 
-function Roster:UpdateStatus ()
+function GRoster:UpdateStatus ()
    -- show latest member count
    local guildName = (GM_Config['RosterGuildName'] or "Unknown")
-   GuildomaticRosterTabFrameMemberCount:SetText(Roster:GetSize() .. " members in " .. guildName .. ".")
+   GuildomaticRosterTabFrameMemberCount:SetText(GRoster:GetSize() .. " members in " .. guildName .. ".")
 
    -- and the time the roster was last snapshotted
    local msg = "Roster not recorded."
@@ -151,12 +151,12 @@ function Roster:UpdateStatus ()
    GuildomaticRosterTabFrameSnappedAt:SetText(msg)
 
    -- and update the scrolling member list display
-   Roster:UpdateScrollBar()
+   GRoster:UpdateScrollBar()
 end
 
-function Roster:UpdateScrollBar ()
+function GRoster:UpdateScrollBar ()
    local offset = FauxScrollFrame_GetOffset(GuildomaticRosterTabFrameScrollBar)
-   local totalRowCount = Roster:GetSize();
+   local totalRowCount = GRoster:GetSize();
    local rowHeight = 16
    local displayRowCount = 18
 
@@ -165,7 +165,7 @@ function Roster:UpdateScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by the configured column
-   table.sort(UDKP_GuildRoster, Roster:GetSortComparator())
+   table.sort(UDKP_GuildRoster, GRoster:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;

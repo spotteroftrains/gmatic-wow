@@ -1,51 +1,51 @@
-DKP = {}
+GDKP = {}
 
 local sortDirs = {}
 
 LEADERBOARD_COUNT = 10
 
-function DKP:Command (cmd)
+function GDKP:Command (cmd)
    local commands = GUtil:ParseCommands(cmd)
    local firstWord = commands[1];
 
-   GUtil:Debug("DKP:Command [cmd=" .. cmd .. "].")
+   GUtil:Debug("GDKP:Command [cmd=" .. cmd .. "].")
 
    if GUtil:Blank(cmd) then
-      DKP:PrintHelp()
+      GDKP:PrintHelp()
 
    elseif (cmd == "on") then
-      DKP:DoEnableLookups()
+      GDKP:DoEnableLookups()
 
    elseif (cmd == "off") then
-      DKP:DoDisableLookups()
+      GDKP:DoDisableLookups()
 
    else
       -- mod-runner is looking up dkp for someone or some group set
-      DKP:DoLookupDKP(cmd)
+      GDKP:DoLookupDKP(cmd)
    end
 end
 
-function DKP:DoDisableLookups ()
+function GDKP:DoDisableLookups ()
    GUtil:Print("Disabled DKP lookups.")
    GM_Config["DKP_Lookups"] = false
 end
 
-function DKP:DoDisableShowZeroPlayers ()
+function GDKP:DoDisableShowZeroPlayers ()
    GUtil:Print("Disabled showing of zero-dkp players in DKP list.")
    GM_Config["DKP_ShowZero"] = false
 end
 
-function DKP:DoEnableLookups ()
+function GDKP:DoEnableLookups ()
    GUtil:Print("Enabled DKP lookups.")
    GM_Config["DKP_Lookups"] = true
 end
 
-function DKP:DoEnableShowZeroPlayers ()
+function GDKP:DoEnableShowZeroPlayers ()
    GUtil:Print("Enabled showing of zero-dkp players in DKP list.")
    GM_Config["DKP_ShowZero"] = true
 end
 
-function DKP:DoLookupDKP (name, requestor)
+function GDKP:DoLookupDKP (name, requestor)
 --    local safeRequestor = requestor
 --    if not safeRequestor then
 --       safeRequestor = "nil"
@@ -55,24 +55,24 @@ function DKP:DoLookupDKP (name, requestor)
 
    -- don't allow dkp lookups if they're disabled
    if (not GM_Config["DKP_Lookups"]) then
-      DKP:ReportMessage(requestor, "Can't look up DKP as lookups are " ..
+      GDKP:ReportMessage(requestor, "Can't look up DKP as lookups are " ..
                         "currently disabled.")
       return
    end
 
    -- make sure we actually have dkp data present
    if (not UDKP_DKP_LastUpdate) then
-      DKP:ReportMessage(requestor, "No DKP data available.")
+      GDKP:ReportMessage(requestor, "No DKP data available.")
       return
    end
 
    -- report date of current dkp data
-   DKP:ReportMessage(requestor, "DKP info last updated " .. 
+   GDKP:ReportMessage(requestor, "DKP info last updated " .. 
                      UDKP_DKP_LastUpdate .. ".")
 
    -- report usage if no name/dkp-set to look up
    if (not name) then
-      DKP:ReportMessage(requestor, "Usage: dkp <player/class/all/boss/raid>")
+      GDKP:ReportMessage(requestor, "Usage: dkp <player/class/all/boss/raid>")
       return
    end
 
@@ -102,11 +102,11 @@ function DKP:DoLookupDKP (name, requestor)
           zone == "Blackwing Lair" or 
           zone == "Molten Core" or 
           zone == "Naxxramas") then
-         DKP:ReportMessage(requestor, "DKP for " .. zone)
+         GDKP:ReportMessage(requestor, "DKP for " .. zone)
 
          for k, v in pairs(UDKP_Events) do
             if (v["zone"] == zone) then
-               DKP:ReportMessage(requestor, v["name"] .. " : " .. v["dkp"])
+               GDKP:ReportMessage(requestor, v["name"] .. " : " .. v["dkp"])
             end
          end
 
@@ -114,7 +114,7 @@ function DKP:DoLookupDKP (name, requestor)
          -- output dkp info for all matching snapshot events
          for k, v in pairs(UDKP_Events) do
             if (strlen(v["zone"]) == 0) then
-               DKP:ReportMessage(requestor, v["name"] .. " : " .. v["dkp"])
+               GDKP:ReportMessage(requestor, v["name"] .. " : " .. v["dkp"])
             end
          end
       end
@@ -137,7 +137,7 @@ function DKP:DoLookupDKP (name, requestor)
           (string.lower(player["name"]) == name) or 
           (name == "all") or 
           (name == "raid" and raid_players_cache[player["name"]] == 1)) then
-         DKP:ReportMessage(requestor, GUtil:Capitalize(player["name"]) .. 
+         GDKP:ReportMessage(requestor, GUtil:Capitalize(player["name"]) .. 
                            " : " .. player["dkp"])
          found = found + 1;
 
@@ -150,11 +150,11 @@ function DKP:DoLookupDKP (name, requestor)
 
    -- nobody found
    if (found == 0) then
-      DKP:ReportMessage(requestor, "Unknown user or group: " .. name .. ".")
+      GDKP:ReportMessage(requestor, "Unknown user or group: " .. name .. ".")
    end
 end
 
-function DKP:GetShowPlayerList ()
+function GDKP:GetShowPlayerList ()
    if (GM_Config["DKP_ShowZero"]) then
       return UDKP_Players
 
@@ -170,7 +170,7 @@ function DKP:GetShowPlayerList ()
    end
 end
 
-function DKP:GetSortComparator ()
+function GDKP:GetSortComparator ()
    local sortField = GuildomaticDKPTabFrame.sortType
 
    local sfunc = nil
@@ -203,25 +203,25 @@ function DKP:GetSortComparator ()
    if (reverse) then return GUtil:ReverseComparator(sfunc) else return sfunc end
 end
 
-function DKP:OnDKPEntryClick (button)
+function GDKP:OnDKPEntryClick (button)
    GUtil:Debug("DKP entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticDKPTabFrameScrollBar.selectedEntry = 
       getglobal("DKPEntry" .. this:GetID()).entryIndex;
 
-   DKP:UpdateScrollBar();
+   GDKP:UpdateScrollBar();
 end
 
-function DKP:OnLoad ()
+function GDKP:OnLoad ()
    GuildomaticDKPTabFrame.sortType = "name"
 end
 
-function DKP:OnShow ()    
---    GUtil:Debug("DKP:OnShow");
+function GDKP:OnShow ()    
+--    GUtil:Debug("GDKP:OnShow");
 
-   DKP:UpdateScrollBar();
+   GDKP:UpdateScrollBar();
 end
 
-function DKP:OnSortColumnClicked (sortType)
+function GDKP:OnSortColumnClicked (sortType)
    -- allow flipping sort direction or restoring previous direction by column
    GuildomaticDKPTabFrame.sortDir =
       GUtil:UpdateSortDirection(sortDirs, GuildomaticDKPTabFrame.sortType, 
@@ -231,29 +231,29 @@ function DKP:OnSortColumnClicked (sortType)
    GuildomaticDKPTabFrame.sortType = sortType   
 
    -- refresh the view
-   DKP:UpdateScrollBar();
+   GDKP:UpdateScrollBar();
 end
 
-function DKP:OnVariablesLoaded ()
---    GUtil:Debug("DKP:OnVariablesLoaded")
+function GDKP:OnVariablesLoaded ()
+--    GUtil:Debug("GDKP:OnVariablesLoaded")
 end
 
-function DKP:OnWhisper (msg, param, cmd, requestor, commands)
+function GDKP:OnWhisper (msg, param, cmd, requestor, commands)
    if (string.lower(cmd) == "dkp") then
       local _, _, params = string.find(msg, "[^%s]+ ?(.*)");
-      DKP:DoLookupDKP(params, requestor);
+      GDKP:DoLookupDKP(params, requestor);
       return true
    end
 
    return false
 end
 
-function DKP:PrintHelp ()
+function GDKP:PrintHelp ()
    Guildomatic:PrintHelpLine("dkp", "<name/class/all/raid> [check dkp]")
    Guildomatic:PrintHelpLine("dkp", "<on/off> [enable/disable dkp lookups]")
 end
 
-function DKP:ReportMessage (requestor, msg)
+function GDKP:ReportMessage (requestor, msg)
    if (requestor) then
       GUtil:SendChatMessage(requestor, msg)
    else
@@ -261,14 +261,14 @@ function DKP:ReportMessage (requestor, msg)
    end
 end
 
-function DKP:SetHeaderWidth (frame, width)
+function GDKP:SetHeaderWidth (frame, width)
    frame:SetWidth(width);
    getglobal(frame:GetName().."Middle"):SetWidth(width - 9);
 end
 
-function DKP:UpdateScrollBar ()
+function GDKP:UpdateScrollBar ()
    local offset = FauxScrollFrame_GetOffset(GuildomaticDKPTabFrameScrollBar)
-   local playerList = DKP:GetShowPlayerList()
+   local playerList = GDKP:GetShowPlayerList()
    local totalRowCount = table.getn(playerList)
    local rowHeight = 16
    local displayRowCount = 20
@@ -278,7 +278,7 @@ function DKP:UpdateScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by name
-   table.sort(playerList, DKP:GetSortComparator())
+   table.sort(playerList, GDKP:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;

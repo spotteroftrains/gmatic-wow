@@ -1,9 +1,9 @@
-Auctions = {}
+GAuctions = {}
 
 local elapsedTimer = 0
 local sortDirs = {}
 
-function Auctions:AcceptBid (bidder, bid)
+function GAuctions:AcceptBid (bidder, bid)
    if (not bid) then
       GUtil:SendChatMessage(bidder, "Bid must be submitted as " ..
                             "'<bid amount>', example: /w " .. 
@@ -11,7 +11,7 @@ function Auctions:AcceptBid (bidder, bid)
       return;
    end
 
-   local auctions = Auctions:GetAuctionsByStartTime()
+   local auctions = GAuctions:GetAuctionsByStartTime()
    local auction = auctions[1]
 
 --    GUtil:Debug("AcceptBid, auctions by start time:")
@@ -89,42 +89,42 @@ function Auctions:AcceptBid (bidder, bid)
    end
 end
  
-function Auctions:Command (cmd)
+function GAuctions:Command (cmd)
    local commands = GUtil:ParseCommands(cmd)
    local firstWord = commands[1];
 
-   GUtil:Debug("Auctions:Command [cmd=" .. cmd .. "].")
+   GUtil:Debug("GAuctions:Command [cmd=" .. cmd .. "].")
 
    if GUtil:Blank(cmd) then
-      Auctions:PrintHelp()
+      GAuctions:PrintHelp()
 
    elseif (cmd == "clear") then
-      Auctions:DoClearAllAuctions()
+      GAuctions:DoClearAllAuctions()
 
    elseif (firstWord == "config") then
-      Auctions:DoConfig(commands)
+      GAuctions:DoConfig(commands)
 
    elseif (cmd == "list") then
-      Auctions:DoListAuctions()
+      GAuctions:DoListAuctions()
 
    elseif (firstWord == "remove") then
-      Auctions:DoRemoveAuction(commands)
+      GAuctions:DoRemoveAuction(commands)
 
    elseif (cmd == "stop") then
-      Auctions:DoStopAuction()
+      GAuctions:DoStopAuction()
 
    else
-      Auctions:DoStartAuction(cmd)
+      GAuctions:DoStartAuction(cmd)
    end
 end
 
-function Auctions:DoClearAllAuctions () 
+function GAuctions:DoClearAllAuctions () 
    UDKP_Auctions = { };
    GUtil:Print("Cleared all auctions.")
-   Auctions:UpdateScrollBar()
+   GAuctions:UpdateScrollBar()
 end
 
-function Auctions:DoConfig (commands)
+function GAuctions:DoConfig (commands)
    if (commands[2] and commands[3]) then
       local numRounds = tonumber(commands[2]);
       local roundLength = tonumber(commands[3]);
@@ -143,7 +143,7 @@ function Auctions:DoConfig (commands)
                     "<round length in seconds> [configure auctions].");
 end
 
-function Auctions:DoListAuctions ()
+function GAuctions:DoListAuctions ()
    local num = 0;
    if (UDKP_Auctions) then
       for k, v in pairs(UDKP_Auctions) do
@@ -169,7 +169,7 @@ function Auctions:DoListAuctions ()
    end
 end
 
-function Auctions:DoRemoveAuction (commands)
+function GAuctions:DoRemoveAuction (commands)
    if (commands[2]) then
       local snum = tonumber(commands[2]);
 
@@ -189,7 +189,7 @@ function Auctions:DoRemoveAuction (commands)
    end
 end
 
-function Auctions:DoStartAuction (args)
+function GAuctions:DoStartAuction (args)
    if (GM_Config["AuctionRunning"] == 1) then
       GUtil:PrintError("There is an auction already running.");
       return
@@ -198,14 +198,14 @@ function Auctions:DoStartAuction (args)
    local _, _, sItem = string.find(args, "^(.+)");
    sItem = GUtil:trim(sItem)
 
-   Auctions:Print("Auctioning " .. sItem .. ". " .. 
+   GAuctions:Print("Auctioning " .. sItem .. ". " .. 
                   GM_Config["AuctionRounds"] .. " rounds of bidding. " .. 
                   GM_Config["AuctionRoundTime"] .. " seconds in each round.")
 
-   Auctions:Print("Whisper " .. UnitName("player") .. 
+   GAuctions:Print("Whisper " .. UnitName("player") .. 
                " to bid. Example: '/w " .. UnitName("player") .. " 100'.")
 
-   Auctions:Print("Now taking bids.")
+   GAuctions:Print("Now taking bids.")
 
    -- create auction and provide extra 5 seconds for people to get started
    tinsert(UDKP_Auctions, 1, {
@@ -224,22 +224,22 @@ function Auctions:DoStartAuction (args)
    GM_Config["AuctionRunning"] = 1
 end
 
-function Auctions:DoStopAuction ()
+function GAuctions:DoStopAuction ()
    if (GM_Config["AuctionRunning"] == 1) then
       GM_Config["AuctionRunning"] = 0
 
-      local auctions = Auctions:GetAuctionsByStartTime()
+      local auctions = GAuctions:GetAuctionsByStartTime()
       auction = auctions[1];
 
       if (auction and auction["start"] >= 0) then
          auction["round"] = GM_Config["AuctionRounds"];
          auction["start"] = -1;
-         Auctions:Print("Auction cancelled.");
+         GAuctions:Print("Auction cancelled.");
 
          -- actually remove the unfinished auction from the master listxs
          tremove(UDKP_Auctions, auction["base_auction_index"])
 
-         Auctions:UpdateScrollBar();
+         GAuctions:UpdateScrollBar();
       end
 
       GUtil:Print("Auction stopped.");
@@ -249,7 +249,7 @@ function Auctions:DoStopAuction ()
    end
 end
 
-function Auctions:GetAuctionsByStartTime ()
+function GAuctions:GetAuctionsByStartTime ()
    local auctions = {}
    for key, value in pairs(UDKP_Auctions) do
       value["base_auction_index"] = key
@@ -259,7 +259,7 @@ function Auctions:GetAuctionsByStartTime ()
    return auctions
 end
 
-function Auctions:GetNumBidders (auction, round)
+function GAuctions:GetNumBidders (auction, round)
    local numBidders = 0;
 
    for k, bid in pairs(auction["bids"]) do
@@ -271,11 +271,11 @@ function Auctions:GetNumBidders (auction, round)
    return numBidders;
 end
 
-function Auctions:GetSize ()
+function GAuctions:GetSize ()
     return table.getn(UDKP_Auctions)
 end
 
-function Auctions:GetSortComparator ()
+function GAuctions:GetSortComparator ()
    local sortField = GuildomaticAuctionsTabFrame.sortType
 
    local sfunc = nil
@@ -302,27 +302,27 @@ function Auctions:GetSortComparator ()
    if (reverse) then return GUtil:ReverseComparator(sfunc) else return sfunc end
 end
 
-function Auctions:OnAuctionsEntryClick (button)
+function GAuctions:OnAuctionsEntryClick (button)
    GUtil:Debug("Auctions entry clicked [id=" .. this:GetID() .. "].")
    GuildomaticAuctionsTabFrameScrollBar.selectedEntry = 
       getglobal("AuctionsEntry" .. this:GetID()).entryIndex;
 
-   Auctions:UpdateScrollBar();
+   GAuctions:UpdateScrollBar();
 end
 
-function Auctions:OnClearAllClicked ()
-   Auctions:DoClearAllAuctions()
+function GAuctions:OnClearAllClicked ()
+   GAuctions:DoClearAllAuctions()
 end
 
-function Auctions:OnLoad ()
+function GAuctions:OnLoad ()
    GuildomaticAuctionsTabFrame.sortType = "end"
 end
 
-function Auctions:OnShow ()    
---    GUtil:Debug("Auctions:OnShow");
+function GAuctions:OnShow ()    
+--    GUtil:Debug("GAuctions:OnShow");
 end
 
-function Auctions:OnSortColumnClicked (sortType)
+function GAuctions:OnSortColumnClicked (sortType)
    -- allow flipping sort direction or restoring previous direction by column
    GuildomaticAuctionsTabFrame.sortDir =
       GUtil:UpdateSortDirection(sortDirs, GuildomaticAuctionsTabFrame.sortType, 
@@ -332,11 +332,11 @@ function Auctions:OnSortColumnClicked (sortType)
    GuildomaticAuctionsTabFrame.sortType = sortType   
 
    -- refresh the view
-   Auctions:UpdateScrollBar();
+   GAuctions:UpdateScrollBar();
 end
 
 -- this is only used for updating the auction
-function Auctions:OnUpdate (elapsed)
+function GAuctions:OnUpdate (elapsed)
    -- TODO: wow, this is a lot of conditional action.  break into methods.
    elapsedTimer = elapsedTimer + elapsed
 
@@ -350,7 +350,7 @@ function Auctions:OnUpdate (elapsed)
       return
    end
 
-   local auctions = Auctions:GetAuctionsByStartTime()
+   local auctions = GAuctions:GetAuctionsByStartTime()
    auction = auctions[1];
 
    if not auction then
@@ -368,16 +368,16 @@ function Auctions:OnUpdate (elapsed)
       local roundSecs = (GM_Config["AuctionRounds"] * 
                          GM_Config["AuctionRoundTime"])
       if (now > (start + roundSecs)) then
-         Auctions:UpdateAuctionWinner(auction, round);
+         GAuctions:UpdateAuctionWinner(auction, round);
 
          -- if we only have 1 bidder in the last round, use the
          -- previous round's high bid, but only if this was either the
          -- first round, or the previous round wasn't a tie
          local lastWinner = auction["winner"];
-         if ((Auctions:GetNumBidders(auction, round) == 1) and 
+         if ((GAuctions:GetNumBidders(auction, round) == 1) and 
              (lastWinner == auction["winner"]) and
-             ((round > 0) and (not Auctions:RoundWasTie(auction, round - 1)))) then
-            Auctions:UpdateAuctionWinner(auction, round - 1);
+             ((round > 0) and (not GAuctions:RoundWasTie(auction, round - 1)))) then
+            GAuctions:UpdateAuctionWinner(auction, round - 1);
          end
 
          -- end the auction
@@ -387,13 +387,13 @@ function Auctions:OnUpdate (elapsed)
          if (auction["highbid"] > 0) then
             -- check if there was a tie
             if (auction["numhighbids"] > 1) then
-               Auctions:Print("Auction tied. " .. 
+               GAuctions:Print("Auction tied. " .. 
                               auction["numhighbids"] .. " bids for " .. 
                               auction["highbid"] .. " DKP from " .. 
                               auction["winners"] .. ".")
 
             else
-               Auctions:Print("Auction over for " .. 
+               GAuctions:Print("Auction over for " .. 
                               item .. ". " .. auction["winner"] .. 
                               " wins for " .. auction["highbid"] .. 
                               " DKP.");
@@ -404,7 +404,7 @@ function Auctions:OnUpdate (elapsed)
             auction["utc_time"] = time();
 
          else
-            Auctions:Print("Auction over for " .. item .. ". No bidders.");
+            GAuctions:Print("Auction over for " .. item .. ". No bidders.");
 
             -- no bidders, so just remove it from the table
             tremove(UDKP_Auctions, auction["base_auction_index"])
@@ -412,14 +412,14 @@ function Auctions:OnUpdate (elapsed)
 
          GM_Config["AuctionRunning"] = 0
 
-         Auctions:UpdateScrollBar()
+         GAuctions:UpdateScrollBar()
 
       elseif (now > (start + (round+1) * GM_Config["AuctionRoundTime"])) then
          -- the current, and not-final, round of bidding is over
-         local numBidders = Auctions:GetNumBidders(auction, round);
+         local numBidders = GAuctions:GetNumBidders(auction, round);
          if (numBidders > 1) then
-            Auctions:UpdateAuctionWinner(auction, round);
-            Auctions:Print("Auction round " .. 
+            GAuctions:UpdateAuctionWinner(auction, round);
+            GAuctions:Print("Auction round " .. 
                            round + 1 .. " over for " .. 
                            item .. ". " .. 
                            auction["numhighbids"] .. 
@@ -428,10 +428,10 @@ function Auctions:OnUpdate (elapsed)
 
             auction["round"] = round + 1;
             if (auction["round"] == (GM_Config["AuctionRounds"] - 1)) then
-               Auctions:Print("Last round of bidding begins.");
+               GAuctions:Print("Last round of bidding begins.");
 
             else
-               Auctions:Print("Next round of bidding begins.");
+               GAuctions:Print("Next round of bidding begins.");
             end
 
          else
@@ -447,7 +447,7 @@ function Auctions:OnUpdate (elapsed)
 
          if (auction["timer"] ~= timer) then
             auction["timer"] = timer;
-            Auctions:Print(timer .. " seconds left.");
+            GAuctions:Print(timer .. " seconds left.");
          end
       end
    end
@@ -455,28 +455,28 @@ function Auctions:OnUpdate (elapsed)
    elapsedTimer = elapsedTimer - 0.1
 end
 
-function Auctions:OnVariablesLoaded ()
+function GAuctions:OnVariablesLoaded ()
    -- always start out with no running auction
    GM_Config["AuctionRunning"] = 0
    elapsedTimer = 0
 end
 
-function Auctions:OnWhisper (msg, param, cmd, requestor, commands)
+function GAuctions:OnWhisper (msg, param, cmd, requestor, commands)
    if (GM_Config["AuctionRunning"] == 1 and string.lower(cmd) == "bid") then
-      Auctions:AcceptBid(requestor, tonumber(commands[2]));
+      GAuctions:AcceptBid(requestor, tonumber(commands[2]));
       return true
 
    elseif (GM_Config["AuctionRunning"] == 1 and 
            tonumber(cmd) and 
            (not commands[2])) then
-      Auctions:AcceptBid(requestor, tonumber(cmd));
+      GAuctions:AcceptBid(requestor, tonumber(cmd));
       return true
    end
 
    return false
 end
 
-function Auctions:Print (msg)
+function GAuctions:Print (msg)
    if (GetNumRaidMembers() > 0)  then
       SendChatMessage(msg, "RAID");
 
@@ -488,7 +488,7 @@ function Auctions:Print (msg)
    end
 end
 
-function Auctions:PrintHelp ()
+function GAuctions:PrintHelp ()
    Guildomatic:PrintHelpLine("auction", 
                              "<item> [start an auction for the item]")
    Guildomatic:PrintHelpLine("auction clear", "[deletes all auctions]")
@@ -505,7 +505,7 @@ function Auctions:PrintHelp ()
                GM_Config["AuctionRoundTime"] .. " seconds.")
 end
 
-function Auctions:RoundWasTie (auction, round)
+function GAuctions:RoundWasTie (auction, round)
    local maxBid = 0;
    local bidCount = {};
 
@@ -528,17 +528,17 @@ function Auctions:RoundWasTie (auction, round)
    end
 
    local maxBidderCount = (bidCount[maxBid] or 0);
---    GUtil:Debug("Auctions:RoundWasTie [maxBid=" .. maxBid .. ", maxBidderCount=" .. maxBidderCount .. "].");
+--    GUtil:Debug("GAuctions:RoundWasTie [maxBid=" .. maxBid .. ", maxBidderCount=" .. maxBidderCount .. "].");
 
    return (maxBidderCount > 1);
 end
 
-function Auctions:SetHeaderWidth (frame, width)
+function GAuctions:SetHeaderWidth (frame, width)
    frame:SetWidth(width);
    getglobal(frame:GetName().."Middle"):SetWidth(width - 9);
 end
 
-function Auctions:UpdateAuctionWinner (auction, round)
+function GAuctions:UpdateAuctionWinner (auction, round)
    local highbid, numhighbids, name, winners = 0, 0, "", "";
 
    for k, bid in pairs(auction["bids"]) do
@@ -560,10 +560,10 @@ function Auctions:UpdateAuctionWinner (auction, round)
    auction["winners"] = winners;
 end
 
-function Auctions:UpdateScrollBar ()
+function GAuctions:UpdateScrollBar ()
    local offset = 
       FauxScrollFrame_GetOffset(GuildomaticAuctionsTabFrameScrollBar)
-   local totalRowCount = Auctions:GetSize();
+   local totalRowCount = GAuctions:GetSize();
    local rowHeight = 16
    local displayRowCount = 20
 
@@ -572,7 +572,7 @@ function Auctions:UpdateScrollBar ()
                           displayRowCount, rowHeight);
 
    -- sort the table by name
-   table.sort(UDKP_Auctions, Auctions:GetSortComparator())
+   table.sort(UDKP_Auctions, GAuctions:GetSortComparator())
 
    for line = 1, displayRowCount do
       index = offset + line;
