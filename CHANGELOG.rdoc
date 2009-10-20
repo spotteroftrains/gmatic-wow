@@ -1,3 +1,6 @@
+* [shaper] added add'l safety-check on CHAT_MSG_LOOT message receipt
+  where raids module sometimes isn't available.
+
 * [shaper] added safety-check on whisper and update receipt to make
   sure we don't call into our submodules if they aren't yet loaded for
   some reason.  Main Guildomatic module sometimes appears to receive a

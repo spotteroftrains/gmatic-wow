@@ -102,7 +102,7 @@ function Guildomatic:OnLoad ()
    this:RegisterForDrag("LeftButton");
    
    ChatFrame_AddMessageEventFilter("CHAT_MSG_LOOT", 
-                                   function (...) return GRaids:RecordLoot(...) end)
+                                   function (...) return Guildomatic:OnLoot(...) end)
    ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER",
                                    function (...) return Guildomatic:OnWhisper(...) end)
    ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", 
@@ -199,6 +199,14 @@ function Guildomatic:OnEvent (event)
                      "to clear old snapshots.");
       end
    end
+end
+
+function Guildomatic:OnLoot (...)
+   if (GRaids) then
+      return GRaids:RecordLoot(...);
+   end
+
+   return false, ...;
 end
 
 function Guildomatic:OnShow ()
