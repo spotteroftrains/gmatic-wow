@@ -1,3 +1,8 @@
+* [shaper] rename various files and associated namespacing in an
+  effort to resolve what looks like a sporadic conflict causing DKP
+  module namespace in particular to get clobbered resulting in
+  exception on receipt of a whisper message.
+
 = GUI_3_0_1_20090903
 
 * [shaper] fix auction bugs where if we only had one bidder in final
