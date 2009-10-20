@@ -1,0 +1,23 @@
+= gmatic-wow
+
+The official Guildomatic World of Warcraft in-game module.
+
+Provides facilities for common guild management tasks such as:
+
+* snapshotting roster of guild members
+* managing a queue of members waiting to join a raid
+* snapshotting loot, boss kills
+* running and tracking loot auctions
+* managing in-game DKP
+* and more.
+
+See official download page at http://www.guildomatic.com/meta/downloads
+
+And documentation at http://www.guildomatic.com/meta/gmatic
+
+== Authors
+
+Currently maintained by Walter Korman <shaper@fatgoose.com>
+
+Copyright 2007 - 2009, Fat Goose, Inc.
+http://www.fatgoose.com
