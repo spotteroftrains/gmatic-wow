@@ -206,8 +206,10 @@ function Guildomatic:OnShow ()
 end
 
 function Guildomatic_OnUpdate (elapsed)
-   GAuctions:OnUpdate(elapsed)
-   GQueue:OnUpdate(elapsed)
+   if (GAuctions and GQueue) then
+      GAuctions:OnUpdate(elapsed)
+      GQueue:OnUpdate(elapsed)
+   end
 end
 
 function Guildomatic:OnWhisper (self, event, ...)
@@ -224,12 +226,19 @@ function Guildomatic:OnWhisper (self, event, ...)
       cmd = msg;
    end
 
+   -- make sure our submodules are actually present and loaded.  it
+   -- appears other modules or users may sometimes reload our module
+   -- and this handler could get called when some of our windows
+   -- haven't yet loaded and so their corresponding .lua files
    local handled = false
-   handled = GAuctions:OnWhisper(msg, param, cmd, requestor, commands)
-   if (not handled) then
-      handled = GDKP:OnWhisper(msg, param, cmd, requestor, commands)
+
+   if (GAuctions and GDKP and GQueue) then
+      handled = GAuctions:OnWhisper(msg, param, cmd, requestor, commands)
       if (not handled) then
-         handled = GQueue:OnWhisper(msg, param, cmd, requestor, commands)
+         handled = GDKP:OnWhisper(msg, param, cmd, requestor, commands)
+         if (not handled) then
+            handled = GQueue:OnWhisper(msg, param, cmd, requestor, commands)
+         end
       end
    end
 

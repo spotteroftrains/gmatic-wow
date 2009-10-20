@@ -1,3 +1,9 @@
+* [shaper] added safety-check on whisper and update receipt to make
+  sure we don't call into our submodules if they aren't yet loaded for
+  some reason.  Main Guildomatic module sometimes appears to receive a
+  whisper event when submodules are not yet loaded, perhaps during
+  user or other module reload event.
+
 * [shaper] rename various files and associated namespacing in an
   effort to resolve what looks like a sporadic conflict causing DKP
   module namespace in particular to get clobbered resulting in
